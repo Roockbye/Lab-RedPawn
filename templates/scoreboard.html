@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Scoreboard — RedPawn SOC Lab{% endblock %}
+
+{% block content %}
+<div class="scoreboard-page">
+    <h1>🏆 Scoreboard</h1>
+    <p class="scoreboard-subtitle">{{ total_questions }} questions | {{ total_possible }} points possibles</p>
+
+    <div class="scoreboard-table-container">
+        <table class="scoreboard-table">
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th class="col-player">Analyste</th>
+                    <th class="col-score">Score</th>
+                    <th class="col-progress">Progression</th>
+                    <th class="col-solved">Questions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in scoreboard %}
+                <tr class="{% if player.id == current_player_id %}current-player{% endif %}
+                           {% if loop.index == 1 and player.total_score > 0 %}rank-gold{% endif %}
+                           {% if loop.index == 2 and player.total_score > 0 %}rank-silver{% endif %}
+                           {% if loop.index == 3 and player.total_score > 0 %}rank-bronze{% endif %}">
+                    <td class="col-rank">
+                        {% if loop.index == 1 and player.total_score > 0 %}
+                            🥇
+                        {% elif loop.index == 2 and player.total_score > 0 %}
+                            🥈
+                        {% elif loop.index == 3 and player.total_score > 0 %}
+                            🥉
+                        {% else %}
+                            {{ loop.index }}
+                        {% endif %}
+                    </td>
+                    <td class="col-player">
+                        <span class="player-name">{{ player.username }}</span>
+                        {% if player.id == current_player_id %}
+                        <span class="you-badge">vous</span>
+                        {% endif %}
+                    </td>
+                    <td class="col-score">
+                        <span class="score-value">{{ player.total_score }}</span>
+                        <span class="score-max">/ {{ total_possible }}</span>
+                    </td>
+                    <td class="col-progress">
+                        <div class="progress-bar scoreboard-progress">
+                            <div class="progress-fill" style="width: {{ (player.total_score / total_possible * 100)|int if total_possible > 0 else 0 }}%"></div>
+                        </div>
+                        <span class="progress-pct">{{ (player.total_score / total_possible * 100)|int if total_possible > 0 else 0 }}%</span>
+                    </td>
+                    <td class="col-solved">{{ player.questions_solved }}</td>
+                </tr>
+                {% endfor %}
+                {% if not scoreboard %}
+                <tr>
+                    <td colspan="5" class="empty-scoreboard">Aucun analyste inscrit pour le moment.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

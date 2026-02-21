@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}{{ challenge.title }} — RedPawn SOC Lab{% endblock %}
+
+{% block content %}
+<div class="challenge-page">
+    <!-- Challenge Header -->
+    <div class="challenge-header">
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Retour au dashboard</a>
+        <div class="challenge-title-bar">
+            <div>
+                <h1>{{ challenge.title }}</h1>
+                <div class="challenge-meta">
+                    <span class="meta-badge level" style="background: {{ level_info.color }}20; color: {{ level_info.color }}">
+                        {{ level_info.icon }} {{ level_info.name }}
+                    </span>
+                    <span class="meta-badge category">
+                        {{ category_info.icon }} {{ category_info.name }}
+                    </span>
+                    <span class="meta-badge time">⏱️ {{ challenge.estimated_time }}</span>
+                    <span class="meta-badge points">🏆 {{ points_earned }} / {{ challenge.points_total }} pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story / Briefing -->
+    <details class="story-section" open>
+        <summary class="story-toggle">📋 Briefing de Mission</summary>
+        <div class="story-content markdown">
+            {{ challenge.story | safe }}
+        </div>
+    </details>
+
+    <!-- Artifacts -->
+    <details class="artifacts-section" open>
+        <summary class="artifacts-toggle">📎 Artefacts ({{ challenge.artifacts|length }})</summary>
+        <div class="artifacts-container">
+            {% for artifact in challenge.artifacts %}
+            <div class="artifact-card">
+                <div class="artifact-header">
+                    <span class="artifact-icon">
+                        {% if artifact.type == 'log' %}📋
+                        {% elif artifact.type == 'email' %}✉️
+                        {% elif artifact.type == 'code' %}💻
+                        {% elif artifact.type == 'siem' %}🔔
+                        {% elif artifact.type == 'windows_events' %}🪟
+                        {% elif artifact.type == 'ransom_note' %}💀
+                        {% elif artifact.type == 'timeline' %}⏱️
+                        {% elif artifact.type == 'forensic_report' %}🔬
+                        {% elif artifact.type == 'report' %}📊
+                        {% elif artifact.type == 'intelligence_report' %}🕵️
+                        {% elif artifact.type == 'dlp_log' %}🔒
+                        {% elif artifact.type == 'confidential' %}🔐
+                        {% else %}📄
+                        {% endif %}
+                    </span>
+                    <div>
+                        <h4>{{ artifact.name }}</h4>
+                        <p class="artifact-desc">{{ artifact.description }}</p>
+                    </div>
+                    <button class="btn btn-sm btn-outline copy-artifact" data-artifact="{{ loop.index0 }}" title="Copier le contenu">
+                        📋 Copier
+                    </button>
+                </div>
+                <div class="artifact-content">
+                    <pre><code>{{ artifact.content }}</code></pre>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+
+    <!-- Questions -->
+    <div class="questions-section">
+        <h2>🎯 Questions ({{ solved_questions|length }}/{{ questions|length }})</h2>
+        
+        {% for q in questions %}
+        <div class="question-card {% if q.is_solved %}solved{% endif %}" id="question-{{ q.id }}">
+            <div class="question-header">
+                <div class="question-number">
+                    {% if q.is_solved %}
+                    <span class="q-status solved">✅</span>
+                    {% else %}
+                    <span class="q-status pending">{{ loop.index }}</span>
+                    {% endif %}
+                </div>
+                <div class="question-text">
+                    <p>{{ q.text }}</p>
+                </div>
+                <div class="question-points">
+                    <span class="points-badge">{{ q.points }} pts</span>
+                </div>
+            </div>
+
+            {% if not q.is_solved %}
+            <div class="question-body">
+                <div class="answer-form">
+                    <div class="input-group">
+                        <input type="text" 
+                               class="answer-input" 
+                               id="answer-{{ q.id }}" 
+                               placeholder="Votre réponse (ou FLAG{...})"
+                               data-challenge="{{ challenge.id }}"
+                               data-question="{{ q.id }}"
+                               autocomplete="off">
+                        <button class="btn btn-primary submit-btn" 
+                                onclick="submitAnswer('{{ challenge.id }}', '{{ q.id }}')">
+                            Valider
+                        </button>
+                    </div>
+                    <div class="answer-feedback" id="feedback-{{ q.id }}"></div>
+                </div>
+
+                <!-- Hints -->
+                {% if q.hints_available > 0 %}
+                <div class="hints-section">
+                    <button class="btn btn-hint" 
+                            onclick="requestHint('{{ challenge.id }}', '{{ q.id }}')"
+                            {% if q.hints_used_count >= q.hints_available %}disabled{% endif %}>
+                        💡 Indice ({{ q.hints_used_count }}/{{ q.hints_available }}) 
+                        {% if q.hints_used_count < q.hints_available %}
+                        — coût: -{{ q.hint_cost }} pts
+                        {% else %}
+                        — tous utilisés
+                        {% endif %}
+                    </button>
+                    <div class="hints-list" id="hints-{{ q.id }}">
+                        {% for hint_text in q.hints_revealed %}
+                        <div class="hint-card revealed">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">{{ hint_text }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="question-solved-info">
+                <span class="solved-badge">✅ Réponse validée</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

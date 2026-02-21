@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — RedPawn SOC Lab{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Player Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ player.total_score }}</span>
+                <span class="stat-label">Points</span>
+            </div>
+            <div class="stat-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ (player.total_score / total_possible * 100)|int if total_possible > 0 else 0 }}%"></div>
+                </div>
+                <span class="stat-detail">/ {{ total_possible }}</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.correct_submissions }}</span>
+                <span class="stat-label">Questions résolues</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.total_submissions }}</span>
+                <span class="stat-label">Soumissions totales</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">💡</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.total_hints }}</span>
+                <span class="stat-label">Indices utilisés</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Challenges by Level -->
+    {% for level_num in [1, 2, 3, 4] %}
+    {% if level_num in challenges_by_level %}
+    <div class="level-section">
+        <div class="level-header" style="border-left-color: {{ levels[level_num].color }}">
+            <h2>
+                <span class="level-icon">{{ levels[level_num].icon }}</span>
+                Niveau {{ level_num }} — {{ levels[level_num].name }}
+            </h2>
+            <span class="level-badge" style="background: {{ levels[level_num].color }}20; color: {{ levels[level_num].color }}">
+                {{ challenges_by_level[level_num]|length }} challenges
+            </span>
+        </div>
+
+        <div class="challenges-grid">
+            {% for c in challenges_by_level[level_num] %}
+            <a href="{{ url_for('challenge_view', challenge_id=c.id) }}" class="challenge-card {% if c.is_complete %}completed{% endif %}">
+                <div class="card-header">
+                    <span class="card-category">{{ categories[c.category].icon }} {{ categories[c.category].name }}</span>
+                    {% if c.is_complete %}
+                    <span class="card-status completed">✅ Terminé</span>
+                    {% elif c.solved > 0 %}
+                    <span class="card-status in-progress">🔄 En cours</span>
+                    {% else %}
+                    <span class="card-status new">🆕 Nouveau</span>
+                    {% endif %}
+                </div>
+                <h3 class="card-title">{{ c.title }}</h3>
+                <div class="card-meta">
+                    <span>⏱️ {{ c.estimated_time }}</span>
+                    <span>🏆 {{ c.points_total }} pts</span>
+                </div>
+                <div class="card-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ c.progress_pct }}%; background: {{ levels[level_num].color }}"></div>
+                    </div>
+                    <span class="progress-text">{{ c.solved }}/{{ c.total }} questions</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

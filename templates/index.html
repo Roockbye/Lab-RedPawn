@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}RedPawn SOC Lab — Connexion{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-logo">
+                <pre class="ascii-art">
+ ██████╗ ███████╗██████╗ ██████╗  █████╗ ██╗    ██╗███╗   ██╗
+ ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██║    ██║████╗  ██║
+ ██████╔╝█████╗  ██║  ██║██████╔╝███████║██║ █╗ ██║██╔██╗ ██║
+ ██╔══██╗██╔══╝  ██║  ██║██╔═══╝ ██╔══██║██║███╗██║██║╚██╗██║
+ ██║  ██║███████╗██████╔╝██║     ██║  ██║╚███╔███╔╝██║ ╚████║
+ ╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝     ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝  ╚═══╝
+                </pre>
+            </div>
+            <h1>🛡️ SOC Blue Team Lab</h1>
+            <p class="login-subtitle">Formation interactive — Défense & Investigation</p>
+        </div>
+
+        <div class="login-briefing">
+            <h3>📋 Briefing d'entrée</h3>
+            <p>Bienvenue, analyste. Vous êtes sur le point d'intégrer le <strong>Security Operations Center</strong> de RedPawn Corp.</p>
+            <p>Votre mission : investiguer une série d'incidents de sécurité à travers <strong>12 challenges</strong> progressifs couvrant :</p>
+            <div class="briefing-skills">
+                <span class="skill-tag">📋 Analyse de Logs</span>
+                <span class="skill-tag">🎣 Phishing</span>
+                <span class="skill-tag">🔔 Triage SIEM</span>
+                <span class="skill-tag">🌐 Forensics Réseau</span>
+                <span class="skill-tag">🦠 Analyse Malware</span>
+                <span class="skill-tag">🚨 Incident Response</span>
+                <span class="skill-tag">🕵️ Threat Intelligence</span>
+                <span class="skill-tag">🔬 Forensics Système</span>
+            </div>
+            <div class="briefing-stats">
+                <div class="stat">
+                    <span class="stat-value">12</span>
+                    <span class="stat-label">Challenges</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">100+</span>
+                    <span class="stat-label">Questions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Niveaux</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">4500+</span>
+                    <span class="stat-label">Points</span>
+                </div>
+            </div>
+        </div>
+
+        <form action="{{ url_for('login') }}" method="POST" class="login-form">
+            <div class="form-group">
+                <label for="username">Identifiant Analyste</label>
+                <input type="text" id="username" name="username" 
+                       placeholder="Entrez votre nom/pseudo..." 
+                       required minlength="2" maxlength="30"
+                       autocomplete="off" autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large">
+                🚀 Commencer la mission
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p><strong>Durée estimée :</strong> 4-6 heures (toute une après-midi)</p>
+            <p>Les challenges racontent une histoire continue — suivez l'ordre recommandé !</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
