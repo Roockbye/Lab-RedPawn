@@ -57,6 +57,16 @@ def init_db():
             FOREIGN KEY (player_id) REFERENCES players(id),
             UNIQUE(player_id, challenge_id)
         );
+
+        CREATE TABLE IF NOT EXISTS remote_players (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            source_host TEXT NOT NULL,
+            total_score INTEGER DEFAULT 0,
+            questions_solved INTEGER DEFAULT 0,
+            last_sync TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(username, source_host)
+        );
     """)
     conn.commit()
     conn.close()
@@ -224,3 +234,87 @@ def get_player_stats(player_id):
 
     conn.close()
     return stats
+
+
+# ============ Scoreboard réseau ============
+
+
+def upsert_remote_player(username, source_host, total_score, questions_solved):
+    """Insert or update a remote player's score."""
+    conn = get_db()
+    conn.execute(
+        """INSERT INTO remote_players (username, source_host, total_score, questions_solved, last_sync)
+           VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+           ON CONFLICT(username, source_host) DO UPDATE SET
+             total_score = excluded.total_score,
+             questions_solved = excluded.questions_solved,
+             last_sync = CURRENT_TIMESTAMP""",
+        (username, source_host, total_score, questions_solved)
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_combined_scoreboard():
+    """Get scoreboard combining local and remote players."""
+    conn = get_db()
+
+    # Local players
+    local = conn.execute(
+        """SELECT p.username, p.total_score,
+                  COUNT(DISTINCT s.challenge_id || ':' || s.question_id) as questions_solved,
+                  'local' as source
+           FROM players p
+           LEFT JOIN submissions s ON p.id = s.player_id AND s.is_correct = 1
+           GROUP BY p.id"""
+    ).fetchall()
+
+    # Remote players
+    remote = conn.execute(
+        """SELECT username, total_score, questions_solved, source_host as source
+           FROM remote_players"""
+    ).fetchall()
+
+    conn.close()
+
+    # Combine and deduplicate (local wins on same username)
+    seen = {}
+    for row in local:
+        r = dict(row)
+        seen[r["username"]] = r
+
+    for row in remote:
+        r = dict(row)
+        if r["username"] not in seen:
+            seen[r["username"]] = r
+        else:
+            # Keep the higher score if same username appears
+            if r["total_score"] > seen[r["username"]]["total_score"]:
+                seen[r["username"]] = r
+
+    combined = sorted(seen.values(), key=lambda x: x["total_score"], reverse=True)
+    return combined
+
+
+def get_local_player_data(player_id):
+    """Get local player data for sync to remote server."""
+    conn = get_db()
+    player = conn.execute(
+        "SELECT username, total_score FROM players WHERE id = ?", (player_id,)
+    ).fetchone()
+    if not player:
+        conn.close()
+        return None
+
+    solved = conn.execute(
+        """SELECT COUNT(DISTINCT challenge_id || ':' || question_id) as cnt
+           FROM submissions WHERE player_id = ? AND is_correct = 1""",
+        (player_id,)
+    ).fetchone()
+    conn.close()
+
+    return {
+        "username": player["username"],
+        "total_score": player["total_score"],
+        "questions_solved": solved["cnt"],
+    }

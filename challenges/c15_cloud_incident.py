@@ -226,7 +226,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q1",
             "text": "Quel compte IAM a été utilisé pour l'accès initial à la console AWS ?",
             "answer": "svc-deploy-ci",
-            "flag": "FLAG{svc-deploy-ci}",
+            "flag": "REDPAWN{svc-deploy-ci}",
             "points": 40,
             "hints": [
                 "C'est le premier événement ConsoleLogin",
@@ -238,7 +238,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q2",
             "text": "Quel est le nom du faux utilisateur IAM créé par l'attaquant pour la persistance ?",
             "answer": "aws-health-monitor",
-            "flag": "FLAG{aws-health-monitor}",
+            "flag": "REDPAWN{aws-health-monitor}",
             "points": 40,
             "hints": [
                 "Cherchez l'événement CreateUser",
@@ -250,7 +250,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q3",
             "text": "Quelle policy AWS a été attachée au faux compte pour obtenir les privilèges maximaux ?",
             "answer": "AdministratorAccess",
-            "flag": "FLAG{AdministratorAccess}",
+            "flag": "REDPAWN{AdministratorAccess}",
             "points": 40,
             "hints": [
                 "Regardez l'événement AttachUserPolicy",
@@ -262,7 +262,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q4",
             "text": "Quelle IP l'attaquant utilise-t-il après le pivot (pas l'IP C2 initiale) ?",
             "answer": "45.89.127.33",
-            "flag": "FLAG{45.89.127.33}",
+            "flag": "REDPAWN{45.89.127.33}",
             "points": 50,
             "hints": [
                 "L'attaquant change d'IP entre les événements console et CLI",
@@ -274,7 +274,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q5",
             "text": "Combien de fichiers au total ont été exfiltrés depuis le bucket redpawn-client-contracts ?",
             "answer": "247",
-            "flag": "FLAG{247}",
+            "flag": "REDPAWN{247}",
             "points": 40,
             "hints": [
                 "Regardez l'EVENT 8 — GetObject events"
@@ -285,7 +285,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q6",
             "text": "Quel volume TOTAL de données a été exfiltré depuis les 2 buckets S3 (en GB, arrondi au dixième) ?",
             "answer": "4.1",
-            "flag": "FLAG{4.1}",
+            "flag": "REDPAWN{4.1}",
             "points": 50,
             "hints": [
                 "Additionnez les tailles : un bucket de 892 MB et un de 3.2 GB",
@@ -297,7 +297,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q7",
             "text": "Quel est le nom de la fonction Lambda malveillante créée pour la persistance ?",
             "answer": "health-check-scheduler",
-            "flag": "FLAG{health-check-scheduler}",
+            "flag": "REDPAWN{health-check-scheduler}",
             "points": 40,
             "hints": [
                 "Regardez l'événement CreateFunction"
@@ -306,9 +306,9 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
         },
         {
             "id": "q8",
-            "text": "Quel service AWS déclenche la Lambda malveillante ? (type de source)",
+            "text": "Quel service AWS déclenche la Lambda malveillante ?",
             "answer": "SQS",
-            "flag": "FLAG{SQS}",
+            "flag": "REDPAWN{SQS}",
             "points": 50,
             "hints": [
                 "Regardez l'événement CreateEventSourceMapping",
@@ -320,7 +320,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q9",
             "text": "Quelle protection a empêché l'attaquant de désactiver CloudTrail ?",
             "answer": "SCP",
-            "flag": "FLAG{SCP}",
+            "flag": "REDPAWN{SCP}",
             "points": 60,
             "hints": [
                 "C'est mentionné dans les NOTES de l'EVENT 12",
@@ -330,9 +330,9 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
         },
         {
             "id": "q10",
-            "text": "Qu'a fait l'attaquant au bucket redpawn-db-backups pour maximiser les dégâts ? (action API)",
+            "text": "Qu'a fait l'attaquant au bucket redpawn-db-backups pour maximiser les dégâts ?",
             "answer": "PutBucketPolicy",
-            "flag": "FLAG{PutBucketPolicy}",
+            "flag": "REDPAWN{PutBucketPolicy}",
             "points": 50,
             "hints": [
                 "C'est le dernier événement majeur",
@@ -344,7 +344,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q11",
             "text": "Combien de tentatives anti-forensics (suppression de logs) l'attaquant a-t-il effectuées ?",
             "answer": "2",
-            "flag": "FLAG{2}",
+            "flag": "REDPAWN{2}",
             "points": 30,
             "hints": [
                 "StopLogging + DeleteTrail = 2 tentatives"
@@ -355,7 +355,7 @@ Cloud forensics avancée. Montrez que vous savez traquer dans le cloud.
             "id": "q12",
             "text": "Le MFA était-il activé lors de la connexion console initiale ?",
             "answer": "false",
-            "flag": "FLAG{false}",
+            "flag": "REDPAWN{false}",
             "points": 40,
             "hints": [
                 "Regardez le champ MFAUsed dans l'EVENT 1"

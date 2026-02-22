@@ -139,7 +139,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q1",
             "text": "Combien de violations DLP (BLOCKED) l'utilisatrice a-t-elle déclenchées ?",
             "answer": "4",
-            "flag": "FLAG{4}",
+            "flag": "REDPAWN{4}",
             "points": 30,
             "hints": [
                 "Comptez les événements avec Status: BLOCKED",
@@ -151,7 +151,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q2",
             "text": "Quel est le numéro de série du périphérique USB utilisé pour les tentatives de copie ?",
             "answer": "KT-9F8E7D6C",
-            "flag": "FLAG{KT-9F8E7D6C}",
+            "flag": "REDPAWN{KT-9F8E7D6C}",
             "points": 40,
             "hints": [
                 "Cherchez le serial du device USB dans les logs DLP",
@@ -163,7 +163,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q3",
             "text": "À quelle entreprise concurrente l'employée a-t-elle tenté d'envoyer des données salariales ?",
             "answer": "Competitor Corp",
-            "flag": "FLAG{Competitor_Corp}",
+            "flag": "REDPAWN{Competitor_Corp}",
             "points": 40,
             "hints": [
                 "Regardez l'événement DLP-004 (email bloqué)",
@@ -175,7 +175,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q4",
             "text": "Quel compte personnel cloud l'employée a-t-elle utilisé pour tenter l'upload ?",
             "answer": "sophie.moreau92@gmail.com",
-            "flag": "FLAG{sophie.moreau92@gmail.com}",
+            "flag": "REDPAWN{sophie.moreau92@gmail.com}",
             "points": 30,
             "hints": [
                 "Regardez l'événement DLP-002",
@@ -187,7 +187,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q5",
             "text": "Combien de pages ont été imprimées lors de l'impression massive qui n'a PAS été bloquée ?",
             "answer": "47",
-            "flag": "FLAG{47}",
+            "flag": "REDPAWN{47}",
             "points": 30,
             "hints": [
                 "DLP-003 a le statut ALLOWED",
@@ -199,7 +199,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q6",
             "text": "Quel outil de capture d'écran a été utilisé pour contourner le DLP ?",
             "answer": "SnippingTool.exe",
-            "flag": "FLAG{SnippingTool}",
+            "flag": "REDPAWN{SnippingTool}",
             "points": 40,
             "hints": [
                 "L'employée a changé de méthode quand les copies étaient bloquées",
@@ -211,7 +211,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q7",
             "text": "Quel format d'archive protégée par mot de passe a été créé pour préparer l'exfiltration ?",
             "answer": "7z",
-            "flag": "FLAG{7z}",
+            "flag": "REDPAWN{7z}",
             "points": 40,
             "hints": [
                 "Regardez l'événement DLP-007",
@@ -223,7 +223,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q8",
             "text": "Quel est l'événement déclencheur probable de la menace interne ? (date format JJ/MM/AAAA)",
             "answer": "07/02/2026",
-            "flag": "FLAG{07/02/2026}",
+            "flag": "REDPAWN{07/02/2026}",
             "points": 50,
             "hints": [
                 "Regardez les événements RH récents",
@@ -235,7 +235,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q9",
             "text": "L'utilisation de Tor (DLP-008) est-elle liée à l'attaque ransomware externe ou à la menace interne ?",
             "answer": "menace interne",
-            "flag": "FLAG{menace_interne}",
+            "flag": "REDPAWN{menace_interne}",
             "points": 50,
             "hints": [
                 "Analysez qui a installé Tor et depuis quel poste",
@@ -247,7 +247,7 @@ Les logs DLP montrent des tentatives répétées d'exfiltration de données sens
             "id": "q10",
             "text": "Combien de MB de données ont été effectivement exfiltrées via Tor ?",
             "answer": "2.3",
-            "flag": "FLAG{2.3}",
+            "flag": "REDPAWN{2.3}",
             "points": 30,
             "hints": [
                 "Regardez le volume d'upload dans DLP-008",

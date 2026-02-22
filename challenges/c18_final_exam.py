@@ -158,7 +158,7 @@ Hashes :
 
 Comptes compromis/créés :
   svc-backup         — Compte AD compromis (vol credentials)
-  j.martin           — Utilisatrice le poste initial phishé
+  marie.dupont       — Utilisatrice du poste initial phishé (WKS-COMPTA-PC03)
   support_it         — Compte backdoor (Domain Admin)
   svc-deploy-ci      — Compte AWS compromis
   aws-health-monitor — Compte IAM créé (Admin)
@@ -213,7 +213,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q1",
             "text": "Quelle est la durée totale de l'attaque, de l'accès initial à la détection par le SOC ? (en heures, arrondi)",
             "answer": "24",
-            "flag": "FLAG{24}",
+            "flag": "REDPAWN{24}",
             "points": 40,
             "hints": [
                 "Du 17/02 15:25 au 18/02 15:30",
@@ -224,8 +224,8 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
         {
             "id": "q2",
             "text": "Combien de techniques MITRE ATT&CK distinctes sont cartographiées dans cette attaque ? (comptez les IDs T1xxx)",
-            "answer": "32",
-            "flag": "FLAG{32}",
+            "answer": "42",
+            "flag": "REDPAWN{42}",
             "points": 60,
             "hints": [
                 "Comptez chaque ligne avec un ID T1xxx dans la matrice",
@@ -237,7 +237,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q3",
             "text": "Combien d'IPs malveillantes distinctes sont listées dans les IoCs ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 30,
             "hints": [
                 "Comptez dans la section IPs malveillantes"
@@ -246,9 +246,9 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
         },
         {
             "id": "q4",
-            "text": "Quel est le volume TOTAL estimé de données volées (cloud + on-premise), en GB ? (valeur du rapport)",
+            "text": "Quel est le volume TOTAL estimé de données volées (cloud + on-premise), en GB ?",
             "answer": "4.1",
-            "flag": "FLAG{4.1}",
+            "flag": "REDPAWN{4.1}",
             "points": 40,
             "hints": [
                 "Regardez le Score de Sévérité à la fin",
@@ -260,7 +260,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q5",
             "text": "Combien de mécanismes de persistance différents l'attaquant a-t-il mis en place au total ? (comptez dans la matrice ATT&CK, phase Persistence)",
             "answer": "7",
-            "flag": "FLAG{7}",
+            "flag": "REDPAWN{7}",
             "points": 50,
             "hints": [
                 "Comptez les techniques dans la phase 'Persistence' de la matrice",
@@ -272,7 +272,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q6",
             "text": "Quelle est l'heure exacte du premier contact C2 le Jour 1 ? (format HH:MM)",
             "answer": "15:32",
-            "flag": "FLAG{15:32}",
+            "flag": "REDPAWN{15:32}",
             "points": 40,
             "hints": [
                 "Cherchez 'Beacon HTTPS actif' dans la chronologie du Jour 1",
@@ -284,7 +284,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q7",
             "text": "Combien de serveurs ont été chiffrés par le ransomware Ph0nLock ?",
             "answer": "5",
-            "flag": "FLAG{5}",
+            "flag": "REDPAWN{5}",
             "points": 30,
             "hints": [
                 "Comptez les serveurs listés après 'Serveurs chiffrés :' dans la chronologie"
@@ -295,7 +295,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q8",
             "text": "Quelle technique (ID MITRE) correspond à l'utilisation du Golden Ticket ?",
             "answer": "T1558.001",
-            "flag": "FLAG{T1558.001}",
+            "flag": "REDPAWN{T1558.001}",
             "points": 50,
             "hints": [
                 "Cherchez 'Golden Ticket' dans la matrice ATT&CK",
@@ -306,12 +306,12 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
         {
             "id": "q9",
             "text": "Combien de phases de la kill chain MITRE ATT&CK sont couvertes par cette attaque ?",
-            "answer": "12",
-            "flag": "FLAG{12}",
+            "answer": "13",
+            "flag": "REDPAWN{13}",
             "points": 50,
             "hints": [
                 "Comptez les grandes phases (titres en majuscules) dans la matrice",
-                "Reconnaissance, Resource Dev, Initial Access, Execution, Persistence, Priv Esc, Defense Evasion, Credential Access, Discovery, Lateral Movement, Collection, Exfiltration, Impact"
+                "Attention à ne pas en oublier — certaines phases sont moins évidentes"
             ],
             "hint_cost": 17
         },
@@ -319,7 +319,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q10",
             "text": "Combien de vecteurs d'exfiltration différents (techniques dans la phase Exfiltration de la matrice ATT&CK) l'attaquant utilise-t-il ?",
             "answer": "4",
-            "flag": "FLAG{4}",
+            "flag": "REDPAWN{4}",
             "points": 50,
             "hints": [
                 "Comptez les techniques dans la phase 'Exfiltration'",
@@ -331,7 +331,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q11",
             "text": "Le vecteur supply chain (commit b7a3f2c1) a-t-il été activé pendant l'attaque ?",
             "answer": "non",
-            "flag": "FLAG{non}",
+            "flag": "REDPAWN{non}",
             "points": 40,
             "hints": [
                 "Regardez la mention du supply chain dans la chronologie",
@@ -343,7 +343,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q12",
             "text": "À quelle heure exacte l'alerte SIEM a-t-elle finalement été déclenchée ? (format HH:MM)",
             "answer": "15:30",
-            "flag": "FLAG{15:30}",
+            "flag": "REDPAWN{15:30}",
             "points": 40,
             "hints": [
                 "C'est le dernier événement de la chronologie du Jour 2"
@@ -354,7 +354,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q13",
             "text": "Quel est le montant de la rançon demandée en BTC ?",
             "answer": "15",
-            "flag": "FLAG{15}",
+            "flag": "REDPAWN{15}",
             "points": 30,
             "hints": [
                 "Cherchez 'rançon' dans la chronologie du ransomware"
@@ -365,7 +365,7 @@ Ce challenge de synthèse teste votre compréhension globale de TOUTE l'investig
             "id": "q14",
             "text": "Combien de systèmes au total (postes + serveurs + comptes cloud) sont identifiés comme touchés dans le score de sévérité ?",
             "answer": "7",
-            "flag": "FLAG{7}",
+            "flag": "REDPAWN{7}",
             "points": 40,
             "hints": [
                 "Regardez 'Systèmes touchés' dans le Score de Sévérité",

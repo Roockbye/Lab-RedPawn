@@ -135,7 +135,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q1",
             "text": "Quel est le nom du groupe d'attaque identifié par l'équipe TI ?",
             "answer": "PHANTOM CRANE",
-            "flag": "FLAG{PHANTOM_CRANE}",
+            "flag": "REDPAWN{PHANTOM_CRANE}",
             "points": 30,
             "hints": [
                 "C'est dans la Section 1 — Attribution",
@@ -147,7 +147,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q2",
             "text": "Quel est le nom du ransomware utilisé par ce groupe ?",
             "answer": "Ph0nLock",
-            "flag": "FLAG{Ph0nLock}",
+            "flag": "REDPAWN{Ph0nLock}",
             "points": 40,
             "hints": [
                 "Regardez les TTPs connus dans la Section 1",
@@ -159,7 +159,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q3",
             "text": "Quel fichier Python a été modifié comme backdoor supply chain ?",
             "answer": "collector.py",
-            "flag": "FLAG{collector.py}",
+            "flag": "REDPAWN{collector.py}",
             "points": 40,
             "hints": [
                 "Regardez la Section 2 — Vecteur Supply Chain",
@@ -171,7 +171,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q4",
             "text": "Quel est le hash du commit malveillant sur GitHub ?",
             "answer": "b7a3f2c1",
-            "flag": "FLAG{b7a3f2c1}",
+            "flag": "REDPAWN{b7a3f2c1}",
             "points": 30,
             "hints": [
                 "Cherchez 'Commit suspect' dans la Section 2"
@@ -182,7 +182,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q5",
             "text": "Après combien de temps (en secondes) la backdoor supply chain se déclencherait-elle ?",
             "answer": "3600",
-            "flag": "FLAG{3600}",
+            "flag": "REDPAWN{3600}",
             "points": 40,
             "hints": [
                 "Regardez le threading.Timer dans le code Python",
@@ -194,7 +194,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q6",
             "text": "Combien d'autres victimes de PHANTOM CRANE ont été identifiées ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 30,
             "hints": [
                 "Comptez les victimes dans la Section 3"
@@ -205,7 +205,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q7",
             "text": "Une victime a payé la rançon mais ses données ont quand même été publiées. Dans quel pays était-elle ?",
             "answer": "Suisse",
-            "flag": "FLAG{Suisse}",
+            "flag": "REDPAWN{Suisse}",
             "points": 50,
             "hints": [
                 "Cherchez 'double extortion' et 'données publiées malgré paiement'",
@@ -217,7 +217,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q8",
             "text": "Combien de fois faut-il réinitialiser le mot de passe KRBTGT selon les recommandations ?",
             "answer": "2",
-            "flag": "FLAG{2}",
+            "flag": "REDPAWN{2}",
             "points": 40,
             "hints": [
                 "Regardez les recommandations CERT Section 4",
@@ -229,7 +229,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q9",
             "text": "Quelle vulnérabilité VPN a été exploitée chez la victime suisse ? (format: CVE-XXXX-XXXXX)",
             "answer": "CVE-2024-21762",
-            "flag": "FLAG{CVE-2024-21762}",
+            "flag": "REDPAWN{CVE-2024-21762}",
             "points": 50,
             "hints": [
                 "Regardez la Victime #3 dans la Section 3",
@@ -241,7 +241,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q10",
             "text": "Quel nom de compte GitHub compromis a été utilisé pour pousser la backdoor ?",
             "answer": "deploy-bot",
-            "flag": "FLAG{deploy-bot}",
+            "flag": "REDPAWN{deploy-bot}",
             "points": 40,
             "hints": [
                 "Cherchez l'auteur du commit malveillant dans la Section 2",
@@ -253,7 +253,7 @@ C'est le challenge final. Démontrez votre capacité à travailler sur du rensei
             "id": "q11",
             "text": "Quelle fonction Python dangereuse est utilisée dans la backdoor pour exécuter du code distant ?",
             "answer": "exec",
-            "flag": "FLAG{exec}",
+            "flag": "REDPAWN{exec}",
             "points": 40,
             "hints": [
                 "Regardez le code Python de la backdoor",

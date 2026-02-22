@@ -163,9 +163,9 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
     "questions": [
         {
             "id": "q1",
-            "text": "Quel a été le vecteur d'attaque initial ? (type de fichier malveillant ouvert par la victime)",
+            "text": "Quel a été le vecteur d'attaque initial ?",
             "answer": "xlsm",
-            "flag": "FLAG{xlsm}",
+            "flag": "REDPAWN{xlsm}",
             "points": 40,
             "hints": [
                 "Regardez l'événement T-7 jours dans la timeline",
@@ -177,7 +177,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q2",
             "text": "Combien de jours se sont écoulés entre la compromission initiale et le déploiement du ransomware ?",
             "answer": "7",
-            "flag": "FLAG{7}",
+            "flag": "REDPAWN{7}",
             "points": 40,
             "hints": [
                 "La compromission initiale est le 11/02, le ransomware le 18/02",
@@ -189,7 +189,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q3",
             "text": "Quelle est l'extension ajoutée aux fichiers chiffrés par le ransomware ?",
             "answer": ".ph0n",
-            "flag": "FLAG{.ph0n}",
+            "flag": "REDPAWN{.ph0n}",
             "points": 30,
             "hints": [
                 "Regardez la note de rançon",
@@ -201,7 +201,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q4",
             "text": "Combien de BTC la rançon demandée s'élève-t-elle ?",
             "answer": "5",
-            "flag": "FLAG{5}",
+            "flag": "REDPAWN{5}",
             "points": 30,
             "hints": [
                 "Regardez la section 'HOW TO RECOVER' de la note"
@@ -212,7 +212,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q5",
             "text": "Quelle adresse email est utilisée par les attaquants pour le contact ?",
             "answer": "ph0n-support@protonmail.com",
-            "flag": "FLAG{ph0n-support@protonmail.com}",
+            "flag": "REDPAWN{ph0n-support@protonmail.com}",
             "points": 30,
             "hints": [
                 "Cherchez l'adresse email dans la note de rançon"
@@ -223,7 +223,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q6",
             "text": "Quel outil de déploiement distant a été utilisé pour propager le ransomware sur les serveurs ?",
             "answer": "PsExec",
-            "flag": "FLAG{PsExec}",
+            "flag": "REDPAWN{PsExec}",
             "points": 50,
             "hints": [
                 "Regardez l'événement T-0 11:30 dans la timeline",
@@ -235,7 +235,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q7",
             "text": "Combien de serveurs ont été chiffrés au total ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 30,
             "hints": [
                 "Comptez les serveurs listés dans la note de rançon",
@@ -247,7 +247,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q8",
             "text": "Quel est l'identifiant unique de la victime dans la note de rançon ?",
             "answer": "RPWN-2026-0218-A7F3B2C1",
-            "flag": "FLAG{RPWN-2026-0218-A7F3B2C1}",
+            "flag": "REDPAWN{RPWN-2026-0218-A7F3B2C1}",
             "points": 30,
             "hints": [
                 "Cherchez 'Unique ID' dans la note de rançon"
@@ -256,13 +256,13 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
         },
         {
             "id": "q9",
-            "text": "Le domaine de typosquatting utilisé pour le phishing initial remplaçait quel caractère ? (format: X→Y)",
-            "answer": "o→0",
-            "flag": "FLAG{o_vers_0}",
+            "text": "Le domaine de typosquatting utilisé pour le phishing initial remplaçait quel caractère par quel autre ? (format: lettre_vers_chiffre)",
+            "answer": "o_vers_0",
+            "flag": "REDPAWN{o_vers_0}",
             "points": 40,
             "hints": [
                 "Comparez redpawn-corp.com avec redpawn-c0rp.com",
-                "C'est le même type de typosquatting que le challenge phishing"
+                "Répondez au format lettre_vers_chiffre, ex: a_vers_1"
             ],
             "hint_cost": 13
         },
@@ -270,7 +270,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q10",
             "text": "Quel compte compromis a été utilisé pour déployer le ransomware ?",
             "answer": "support_it",
-            "flag": "FLAG{support_it}",
+            "flag": "REDPAWN{support_it}",
             "points": 50,
             "hints": [
                 "C'est le compte backdoor créé par l'attaquant",
@@ -282,7 +282,7 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
             "id": "q11",
             "text": "Pourquoi les backups ne peuvent-ils pas être utilisés pour la restauration ?",
             "answer": "SRV-BACKUP-01 a été chiffré",
-            "flag": "FLAG{backup_chiffre}",
+            "flag": "REDPAWN{backup_chiffre}",
             "points": 40,
             "hints": [
                 "Regardez la liste des serveurs chiffrés",
@@ -292,13 +292,13 @@ Vous avez accès à la note de rançon et à la timeline reconstituée de l'inci
         },
         {
             "id": "q12",
-            "text": "Combien d'heures se sont écoulées entre le début de l'attaque finale (08:15) et la déclaration d'incident (12:00) ?",
-            "answer": "3.75",
-            "flag": "FLAG{3h45}",
+            "text": "Combien de temps s'est écoulé entre le début de l'attaque finale (08:15) et la déclaration d'incident (12:00) ? (format: XhYY)",
+            "answer": "3h45",
+            "flag": "REDPAWN{3h45}",
             "points": 40,
             "hints": [
                 "De 08:15 à 12:00",
-                "3 heures et 45 minutes = 3.75 heures ou 3h45"
+                "Calculez la différence en heures et minutes"
             ],
             "hint_cost": 13
         }

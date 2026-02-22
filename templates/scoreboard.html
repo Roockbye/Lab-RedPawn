@@ -4,7 +4,12 @@
 {% block content %}
 <div class="scoreboard-page">
     <h1>🏆 Scoreboard</h1>
-    <p class="scoreboard-subtitle">{{ total_questions }} questions | {{ total_possible }} points possibles</p>
+    <p class="scoreboard-subtitle">
+        {{ total_questions }} questions | {{ total_possible }} points possibles
+        {% if is_networked %}
+        <span class="network-badge" title="Scoreboard synchronisé en réseau">🌐 Réseau</span>
+        {% endif %}
+    </p>
 
     <div class="scoreboard-table-container">
         <table class="scoreboard-table">
@@ -19,7 +24,7 @@
             </thead>
             <tbody>
                 {% for player in scoreboard %}
-                <tr class="{% if player.id == current_player_id %}current-player{% endif %}
+                <tr class="{% if player.username == current_username %}current-player{% endif %}
                            {% if loop.index == 1 and player.total_score > 0 %}rank-gold{% endif %}
                            {% if loop.index == 2 and player.total_score > 0 %}rank-silver{% endif %}
                            {% if loop.index == 3 and player.total_score > 0 %}rank-bronze{% endif %}">
@@ -36,8 +41,11 @@
                     </td>
                     <td class="col-player">
                         <span class="player-name">{{ player.username }}</span>
-                        {% if player.id == current_player_id %}
+                        {% if player.username == current_username %}
                         <span class="you-badge">vous</span>
+                        {% endif %}
+                        {% if player.source is defined and player.source != 'local' %}
+                        <span class="remote-badge" title="Joueur distant ({{ player.source }})">📡</span>
                         {% endif %}
                     </td>
                     <td class="col-score">

@@ -37,11 +37,6 @@ TIMESTAMP              DEVICE              KEY                                  
 2026-02-10 16:20:00    WKS-HR-PC02        HKCU\...\Run                                 OneDrive          %LOCALAPPDATA%\Microsoft\OneDr...    OneDriveSetup.exe m.petit
 2026-02-08 10:00:11    SRV-WEB-01         HKLM\...\Run                                 MonitoringAgent   C:\opt\monitoring\agent.exe           ansible.exe       deploy
 
-=== ANALYSE ===
-Entrées MALVEILLANTES confirmées : Lignes 1, 2, 3 (liées à l'incident)
-Entrées LÉGITIMES : Lignes 4 (TeamViewer IT), 5 (BackupSoft), 6 (OneDrive), 7 (monitoring)
-Gap de détection : Les lignes 1 et 2 n'ont PAS déclenché d'alerte SIEM.
-
 ===== HYPOTHÈSE DE CHASSE #2 : Comptes suspects créés =====
 
 Requête KQL :
@@ -59,11 +54,6 @@ TIMESTAMP              ACCOUNT_NAME     DOMAIN         TARGET_DEVICE    ADDITION
 2026-02-18 06:30:00    svc-monitoring   REDPAWN        SRV-DC-01       MemberOf: Domain Users
 2026-02-15 14:00:00    n.bernard        REDPAWN        SRV-DC-01       MemberOf: Domain Users, Comptabilité
 2026-02-10 09:00:00    stagiaire.2026   REDPAWN        SRV-DC-01       MemberOf: Domain Users, Stagiaires
-
-=== ANALYSE ===
-Compte MALVEILLANT : support_it (ajouté à Domain Admins — backdoor)
-Compte SUSPECT : svc-monitoring (créé pendant la fenêtre d'attaque, à investiguer)
-Comptes LÉGITIMES : n.bernard (nouvel employé), stagiaire.2026 (stagiaire)
 
 ===== HYPOTHÈSE DE CHASSE #3 : Exécution suspecte de LOLBins =====
 
@@ -91,10 +81,6 @@ TIMESTAMP              DEVICE              LOLBIN           COMMAND_LINE        
 2026-02-18 12:30:00    SRV-DC-01          csvde.exe        csvde -f C:\Temp\ad_export.csv -d "DC=redpawn,DC=local"                  cmd.exe          svc-backup
 2026-02-18 13:00:00    WKS-COMPTA-PC03    rundll32.exe     rundll32 C:\Users\j.martin\AppData\Local\Temp\d3d11.dll,DllMain          explorer.exe     j.martin
 
-=== ANALYSE ===
-TOUS ces LOLBins sauf la dernière ligne sont des indicateurs de compromission.
-Gap de détection : certutil et wmic n'ont déclenché AUCUNE alerte.
-
 ===== HYPOTHÈSE DE CHASSE #4 : Connexions réseau anormales =====
 
 Requête KQL :
@@ -120,11 +106,6 @@ REMOTE_IP          PROCESS              DEVICE              COUNT   BYTES_SENT  
 91.234.56.78       svchost.exe          WKS-COMPTA-PC03     18      15,892,345     512,456       1 (80)
 91.234.56.78       cmd.exe              SRV-DC-01           3       45,678         23,456        1 (80)
 
-=== ANALYSE ===
-RuntimeBroker.exe ne devrait JAMAIS établir autant de connexions sortantes.
-svchost.exe vers des IP russes est suspect.
-les 15.89 MB envoyés vers 91.234.56.78 = exfiltration confirmée.
-
 ===== HYPOTHÈSE DE CHASSE #5 : Tâches planifiées suspectes =====
 
 Requête KQL :
@@ -145,11 +126,6 @@ TIMESTAMP              DEVICE              COMMAND_LINE
 2026-02-18 12:06:00    SRV-DC-01          schtasks /create /tn "SystemHealthReport" /tr "powershell -ep bypass -f C:\ProgramData\report.ps1" /sc DAILY /st 02:00 /ru SYSTEM
 2026-02-15 10:00:00    SRV-BACKUP-01      schtasks /create /tn "DailyBackup" /tr "C:\BackupSoft\backup.bat" /sc DAILY /st 23:00 /ru svc-backup
 
-=== ANALYSE ===
-Tâches MALVEILLANTES : WinDefUpdate, SystemHealthReport
-Tâche LÉGITIME : DailyBackup
-Gap notable : La tâche SystemHealthReport à 02:00 est invisible pour le SOC.
-
 ===== SIGMA RULES — GAPS IDENTIFIÉS =====
 
 Règle Sigma existante qui aurait dû matcher :
@@ -162,7 +138,7 @@ Règle Sigma existante qui aurait dû matcher :
         - 'urlcache'
         - '-f'
     condition: selection
-  STATUS: DÉSACTIVÉE dans notre SIEM — faux positifs non traités
+  STATUS: DÉSACTIVÉE
 
 Règle Sigma MANQUANTE (à créer) :
   title: WMIC Remote Process Creation
@@ -214,13 +190,13 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
     "questions": [
         {
             "id": "q1",
-            "text": "Combien de mécanismes de persistance dans le registre (Hypothèse #1) sont confirmés MALVEILLANTS ?",
+            "text": "Combien de mécanismes de persistance dans le registre (Hypothèse #1) sont MALVEILLANTS ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 40,
             "hints": [
-                "Lisez l'analyse sous les résultats de l'Hypothèse #1",
-                "Lignes 1, 2 et 3 sont confirmées malveillantes"
+                "Analysez chaque entrée : qui l'a créée, quel binaire, quel chemin ?",
+                "Les logiciels légitimes sont installés dans Program Files, pas dans Temp ou AppData"
             ],
             "hint_cost": 13
         },
@@ -228,7 +204,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q2",
             "text": "Quel LOLBin utilisé pour télécharger le stager avait sa règle Sigma DÉSACTIVÉE ?",
             "answer": "certutil.exe",
-            "flag": "FLAG{certutil}",
+            "flag": "REDPAWN{certutil}",
             "points": 50,
             "hints": [
                 "Regardez la section Sigma Rules — Gaps Identifiés",
@@ -240,7 +216,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q3",
             "text": "Quel processus légitime a été abusé comme parent pour lancer le PowerShell initial (le premier LOLBin de la liste) ?",
             "answer": "excel.exe",
-            "flag": "FLAG{excel.exe}",
+            "flag": "REDPAWN{excel.exe}",
             "points": 50,
             "hints": [
                 "Regardez le parent du premier powershell.exe dans l'Hypothèse #3",
@@ -252,7 +228,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q4",
             "text": "Combien de bytes (arrondis au MB) ont été exfiltrés via le processus svchost.exe vers 91.234.56.78 ?",
             "answer": "16",
-            "flag": "FLAG{16}",
+            "flag": "REDPAWN{16}",
             "points": 40,
             "hints": [
                 "Regardez l'Hypothèse #4 — la ligne 91.234.56.78 + svchost",
@@ -264,7 +240,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q5",
             "text": "Quel outil a été exécuté pour exporter l'annuaire Active Directory en CSV ?",
             "answer": "csvde.exe",
-            "flag": "FLAG{csvde}",
+            "flag": "REDPAWN{csvde}",
             "points": 50,
             "hints": [
                 "Regardez les LOLBins dans l'Hypothèse #3",
@@ -274,13 +250,13 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
         },
         {
             "id": "q6",
-            "text": "Quel compte utilisateur est marqué comme SUSPECT (ni confirmé malveillant ni légitime) dans l'Hypothèse #2 ?",
+            "text": "Quel compte créé pendant la fenêtre d'attaque nécessite une investigation complémentaire (ni clairement malveillant ni clairement légitime) ?",
             "answer": "svc-monitoring",
-            "flag": "FLAG{svc-monitoring}",
+            "flag": "REDPAWN{svc-monitoring}",
             "points": 40,
             "hints": [
-                "Lisez l'analyse sous les résultats de l'Hypothèse #2",
-                "Il a été créé pendant la fenêtre d'attaque"
+                "Analysez les dates de création et les groupes de chaque compte",
+                "Un compte de service créé le 18/02 sans appartenance suspecte reste ambigu"
             ],
             "hint_cost": 13
         },
@@ -288,7 +264,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q7",
             "text": "Combien de gaps de détection au total sont identifiés dans le bilan final ?",
             "answer": "6",
-            "flag": "FLAG{6}",
+            "flag": "REDPAWN{6}",
             "points": 30,
             "hints": [
                 "Comptez dans la section 'Bilan des gaps de détection'"
@@ -299,7 +275,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q8",
             "text": "À quelle heure la tâche planifiée malveillante 'SystemHealthReport' est-elle programmée ? (format HH:MM)",
             "answer": "02:00",
-            "flag": "FLAG{02:00}",
+            "flag": "REDPAWN{02:00}",
             "points": 40,
             "hints": [
                 "Regardez l'Hypothèse #5 — les tâches planifiées",
@@ -311,7 +287,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q9",
             "text": "Quel processus établit 847 connexions vers le C2, ce qui ne correspond pas à son comportement normal ?",
             "answer": "RuntimeBroker.exe",
-            "flag": "FLAG{RuntimeBroker.exe}",
+            "flag": "REDPAWN{RuntimeBroker.exe}",
             "points": 40,
             "hints": [
                 "Regardez l'Hypothèse #4 — le processus avec le plus de connexions",
@@ -323,7 +299,7 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
             "id": "q10",
             "text": "Quel LOLBin est utilisé avec '/node' pour exécuter des commandes à distance, sans aucune règle de détection ?",
             "answer": "wmic.exe",
-            "flag": "FLAG{wmic}",
+            "flag": "REDPAWN{wmic}",
             "points": 50,
             "hints": [
                 "Regardez les règles Sigma manquantes et l'Hypothèse #3",
@@ -333,9 +309,9 @@ Threat hunting et detection engineering avancés. Montrez que vous savez penser 
         },
         {
             "id": "q11",
-            "text": "Quelle commande ntdsutil extrait une copie complète de la base Active Directory ? (sous-commande après 'ifm')",
+            "text": "Quelle commande ntdsutil extrait une copie complète de la base Active Directory ?",
             "answer": "create full",
-            "flag": "FLAG{create_full}",
+            "flag": "REDPAWN{create_full}",
             "points": 60,
             "hints": [
                 "Regardez la ligne ntdsutil dans l'Hypothèse #3",

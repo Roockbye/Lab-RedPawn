@@ -97,9 +97,9 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
     "questions": [
         {
             "id": "q1",
-            "text": "Quel User-Agent suspect utilisé lors du scan initial contient une faute de frappe volontaire ? (User-Agent complet avec la faute)",
+            "text": "Quel est le mot mal orthographié dans le User-Agent suspect utilisé lors du scan initial ?",
             "answer": "Mozlila",
-            "flag": "FLAG{Mozlila}",
+            "flag": "REDPAWN{Mozlila}",
             "points": 40,
             "hints": [
                 "Comparez les User-Agents de l'attaquant avec 'Mozilla'",
@@ -111,7 +111,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q2",
             "text": "Par quel endpoint l'attaquant a-t-il uploadé le webshell ? (chemin complet)",
             "answer": "/upload.php",
-            "flag": "FLAG{/upload.php}",
+            "flag": "REDPAWN{/upload.php}",
             "points": 40,
             "hints": [
                 "Cherchez la première requête POST avec python-requests",
@@ -123,7 +123,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q3",
             "text": "Quel est le nom complet du fichier webshell déposé ?",
             "answer": "logo-update.php",
-            "flag": "FLAG{logo-update.php}",
+            "flag": "REDPAWN{logo-update.php}",
             "points": 30,
             "hints": [
                 "Regardez le fichier accédé dans /uploads/ juste après l'upload",
@@ -135,7 +135,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q4",
             "text": "Quel outil/bibliothèque l'attaquant utilise-t-il pour interagir avec le webshell ?",
             "answer": "python-requests/2.28.1",
-            "flag": "FLAG{python-requests}",
+            "flag": "REDPAWN{python-requests}",
             "points": 30,
             "hints": [
                 "Regardez le User-Agent lors de l'exploitation du webshell",
@@ -147,7 +147,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q5",
             "text": "Quel est le chemin complet du reverse shell téléchargé par l'attaquant sur le serveur ?",
             "answer": "/tmp/.update",
-            "flag": "FLAG{/tmp/.update}",
+            "flag": "REDPAWN{/tmp/.update}",
             "points": 50,
             "hints": [
                 "Cherchez une commande wget dans les requêtes",
@@ -159,7 +159,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q6",
             "text": "L'attaquant a lu un fichier critique contenant les mots de passe hashés. Quel fichier ? (chemin complet)",
             "answer": "/etc/shadow",
-            "flag": "FLAG{/etc/shadow}",
+            "flag": "REDPAWN{/etc/shadow}",
             "points": 40,
             "hints": [
                 "Cherchez la commande 'cat' sur un fichier sensible du système",
@@ -171,7 +171,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q7",
             "text": "Quel fichier de configuration l'attaquant a-t-il exfiltré en dernier ? (chemin complet)",
             "answer": "/var/www/config/database.php",
-            "flag": "FLAG{/var/www/config/database.php}",
+            "flag": "REDPAWN{/var/www/config/database.php}",
             "points": 40,
             "hints": [
                 "Regardez la dernière commande cmd=cat de l'attaquant",
@@ -183,7 +183,7 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
             "id": "q8",
             "text": "Dans le code du webshell, quelle est la première fonction PHP tentée pour exécuter des commandes ?",
             "answer": "system",
-            "flag": "FLAG{system}",
+            "flag": "REDPAWN{system}",
             "points": 30,
             "hints": [
                 "Lisez le code PHP du webshell",
@@ -193,9 +193,9 @@ Vous avez accès aux logs Apache et au fichier suspect trouvé sur le serveur.
         },
         {
             "id": "q9",
-            "text": "Depuis quel serveur l'attaquant télécharge-t-il le reverse shell ? (IP:port)",
+            "text": "Depuis quel serveur l'attaquant télécharge-t-il le reverse shell ?",
             "answer": "185.234.72.19:8080",
-            "flag": "FLAG{185.234.72.19:8080}",
+            "flag": "REDPAWN{185.234.72.19:8080}",
             "points": 50,
             "hints": [
                 "Regardez la commande wget",

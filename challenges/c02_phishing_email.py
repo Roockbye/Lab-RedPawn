@@ -125,9 +125,9 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
     "questions": [
         {
             "id": "q1",
-            "text": "Quel est le domaine d'envoi utilisé par l'attaquant ? (domaine dans le From:)",
+            "text": "Quel est le domaine d'envoi utilisé par l'attaquant ?",
             "answer": "micros0ft-security.com",
-            "flag": "FLAG{micros0ft-security.com}",
+            "flag": "REDPAWN{micros0ft-security.com}",
             "points": 30,
             "hints": [
                 "Regardez l'en-tête 'From:' de l'email",
@@ -139,7 +139,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q2",
             "text": "Quelle technique de typosquatting est utilisée dans le nom de domaine ? (quel caractère remplace quel autre ? — format attendu : x remplace x)",
             "answer": "0 remplace o",
-            "flag": "FLAG{0_remplace_o}",
+            "flag": "REDPAWN{0_remplace_o}",
             "points": 40,
             "hints": [
                 "Comparez 'micros0ft' avec 'microsoft'",
@@ -151,7 +151,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q3",
             "text": "Quelle est l'adresse IP du serveur d'envoi de l'email ?",
             "answer": "91.234.56.78",
-            "flag": "FLAG{91.234.56.78}",
+            "flag": "REDPAWN{91.234.56.78}",
             "points": 30,
             "hints": [
                 "Cherchez dans les headers 'Received:'",
@@ -163,7 +163,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q4",
             "text": "Quel est le résultat de la vérification SPF ?",
             "answer": "FAIL",
-            "flag": "FLAG{FAIL}",
+            "flag": "REDPAWN{FAIL}",
             "points": 30,
             "hints": [
                 "Cherchez 'SPF' dans les headers ou l'analyse",
@@ -175,7 +175,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q5",
             "text": "Depuis combien de jours le domaine malveillant a-t-il été enregistré (au moment de l'email) ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 40,
             "hints": [
                 "Regardez le WHOIS du domaine",
@@ -187,7 +187,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q6",
             "text": "Quel outil a été utilisé pour envoyer l'email ? (nom et version)",
             "answer": "PHPMailer 6.5.0",
-            "flag": "FLAG{PHPMailer_6.5.0}",
+            "flag": "REDPAWN{PHPMailer_6.5.0}",
             "points": 40,
             "hints": [
                 "Cherchez l'en-tête X-Mailer",
@@ -197,13 +197,13 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
         },
         {
             "id": "q7",
-            "text": "Vers quel domaine malveillant le lien 'Sécuriser mon compte' redirige-t-il réellement ?",
-            "answer": "micros0ft-security.com",
-            "flag": "FLAG{micros0ft-security.com}",
+            "text": "Quel domaine Microsoft légitime est utilisé dans le paramètre 'redirect' du lien de phishing pour tromper la victime ?",
+            "answer": "login.microsoftonline.com",
+            "flag": "REDPAWN{login.microsoftonline.com}",
             "points": 30,
             "hints": [
-                "Regardez l'attribut href du lien, pas le texte affiché",
-                "Le vrai domaine est au début de l'URL, avant le chemin /auth/login"
+                "Regardez l'URL complète du lien 'Sécuriser mon compte'",
+                "Cherchez le paramètre redirect= dans l'URL"
             ],
             "hint_cost": 10
         },
@@ -211,7 +211,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q8",
             "text": "Quelle est l'adresse email de la victime ciblée ?",
             "answer": "marie.dupont@redpawn-corp.com",
-            "flag": "FLAG{marie.dupont@redpawn-corp.com}",
+            "flag": "REDPAWN{marie.dupont@redpawn-corp.com}",
             "points": 20,
             "hints": [
                 "Regardez l'en-tête 'To:'"
@@ -222,7 +222,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
             "id": "q9",
             "text": "Quel registrar a été utilisé pour enregistrer le domaine malveillant ?",
             "answer": "NameCheap Inc.",
-            "flag": "FLAG{NameCheap}",
+            "flag": "REDPAWN{NameCheap}",
             "points": 20,
             "hints": [
                 "Regardez les résultats WHOIS",

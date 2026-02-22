@@ -67,9 +67,9 @@ Format : `<données_base64>.data.c2-update-service.xyz`
     "questions": [
         {
             "id": "q1",
-            "text": "Combien de requêtes DNS d'exfiltration (vers c2-update-service.xyz) ont été effectuées au total ?",
+            "text": "Combien de requêtes DNS d'exfiltration ont été effectuées au total ?",
             "answer": "13",
-            "flag": "FLAG{13}",
+            "flag": "REDPAWN{13}",
             "points": 40,
             "hints": [
                 "Comptez toutes les requêtes TXT vers *.data.c2-update-service.xyz",
@@ -81,7 +81,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q2",
             "text": "Décodez le premier chunk Base64 (aG9zdG5hbWU6V0tTLUNPTVBUQS1QQzAz). Quel est le hostname de la machine infectée ?",
             "answer": "WKS-COMPTA-PC03",
-            "flag": "FLAG{WKS-COMPTA-PC03}",
+            "flag": "REDPAWN{WKS-COMPTA-PC03}",
             "points": 40,
             "hints": [
                 "Décodez : echo 'aG9zdG5hbWU6V0tTLUNPTVBUQS1QQzAz' | base64 -d",
@@ -93,7 +93,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q3",
             "text": "Quel utilisateur est connecté sur la machine infectée ? (décodez le 2ème chunk)",
             "answer": "j.martin",
-            "flag": "FLAG{j.martin}",
+            "flag": "REDPAWN{j.martin}",
             "points": 40,
             "hints": [
                 "Décodez : dXNlcm5hbWU6ai5tYXJ0aW4=",
@@ -105,7 +105,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q4",
             "text": "Quel antivirus est installé sur la machine ? (décodez le chunk 'YXY6...')",
             "answer": "Windows Defender",
-            "flag": "FLAG{Windows_Defender}",
+            "flag": "REDPAWN{Windows_Defender}",
             "points": 40,
             "hints": [
                 "Décodez : YXY6V2luZG93cyBEZWZlbmRlcg==",
@@ -117,7 +117,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q5",
             "text": "Dans la 2ème vague d'exfiltration (09:30), quel mot de passe de base de données RH a été volé ?",
             "answer": "HR@1s",
-            "flag": "FLAG{HR@1s}",
+            "flag": "REDPAWN{HR@1s}",
             "points": 60,
             "hints": [
                 "Décodez : c2FsYXJ5X2RiX3Bhc3N3b3JkPUhSQDFz",
@@ -129,7 +129,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q6",
             "text": "Quel est le mot de passe root MySQL exfiltré ?",
             "answer": "sql@dmin2026",
-            "flag": "FLAG{sql@dmin2026}",
+            "flag": "REDPAWN{sql@dmin2026}",
             "points": 60,
             "hints": [
                 "Décodez : TXlTUUxfcm9vdD1zcWxAZG1pbjIwMjY=",
@@ -141,7 +141,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q7",
             "text": "Quel secret VPN a été exfiltré ?",
             "answer": "ReP@wn2026!",
-            "flag": "FLAG{ReP@wn2026!}",
+            "flag": "REDPAWN{ReP@wn2026!}",
             "points": 60,
             "hints": [
                 "Décodez : VlBOX3NlY3JldD1SZVBAV24yMDI2IQ==",
@@ -153,7 +153,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q8",
             "text": "Quels comptes sont membres du groupe Administrators local ? (décodez le chunk admins, séparez par une virgule)",
             "answer": "Administrator,j.martin",
-            "flag": "FLAG{Administrator,j.martin}",
+            "flag": "REDPAWN{Administrator,j.martin}",
             "points": 40,
             "hints": [
                 "Décodez : YWRtaW5zOkFkbWluaXN0cmF0b3Isai5tYXJ0aW4=",
@@ -165,7 +165,7 @@ Format : `<données_base64>.data.c2-update-service.xyz`
             "id": "q9",
             "text": "Quel type de réponse DNS le serveur C2 renvoie-t-il pour les requêtes d'exfiltration ?",
             "answer": "NXDOMAIN",
-            "flag": "FLAG{NXDOMAIN}",
+            "flag": "REDPAWN{NXDOMAIN}",
             "points": 40,
             "hints": [
                 "Regardez la colonne Response des requêtes TXT",

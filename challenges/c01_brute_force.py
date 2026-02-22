@@ -82,7 +82,7 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
             "id": "q1",
             "text": "Quelle est l'adresse IP de l'attaquant ?",
             "answer": "185.234.72.19",
-            "flag": "FLAG{185.234.72.19}",
+            "flag": "REDPAWN{185.234.72.19}",
             "points": 30,
             "hints": [
                 "Cherchez l'IP qui génère le plus de 'Failed password'",
@@ -95,7 +95,7 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
             "id": "q2",
             "text": "Combien de tentatives de connexion échouées l'attaquant a-t-il effectuées au total ?",
             "answer": "28",
-            "flag": "FLAG{28}",
+            "flag": "REDPAWN{28}",
             "points": 40,
             "hints": [
                 "Comptez toutes les lignes 'Failed password' provenant de l'IP attaquante",
@@ -108,7 +108,7 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
             "id": "q3",
             "text": "Sur quel compte utilisateur l'attaquant a-t-il finalement réussi à se connecter ?",
             "answer": "ftpuser",
-            "flag": "FLAG{ftpuser}",
+            "flag": "REDPAWN{ftpuser}",
             "points": 40,
             "hints": [
                 "Cherchez la première ligne 'Accepted password' venant de l'IP attaquante",
@@ -121,7 +121,7 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
             "id": "q4",
             "text": "À quelle heure exacte (format HH:MM:SS) l'attaquant a-t-il obtenu l'accès initial ?",
             "answer": "08:16:02",
-            "flag": "FLAG{08:16:02}",
+            "flag": "REDPAWN{08:16:02}",
             "points": 30,
             "hints": [
                 "Regardez le timestamp de la ligne 'Accepted password' pour ftpuser",
@@ -133,7 +133,7 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
             "id": "q5",
             "text": "Quelle commande de privilege escalation l'attaquant a-t-il utilisée après la connexion ?",
             "answer": "sudo",
-            "flag": "FLAG{sudo}",
+            "flag": "REDPAWN{sudo}",
             "points": 40,
             "hints": [
                 "Cherchez une action de l'utilisateur ftpuser après sa connexion",
@@ -145,7 +145,7 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
             "id": "q6",
             "text": "Quel est le nom du compte de backdoor créé par l'attaquant ?",
             "answer": "backdoor",
-            "flag": "FLAG{backdoor}",
+            "flag": "REDPAWN{backdoor}",
             "points": 40,
             "hints": [
                 "Cherchez une ligne 'useradd' dans les logs",
@@ -155,9 +155,9 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
         },
         {
             "id": "q7",
-            "text": "Pourquoi le compte créé est-il particulièrement dangereux ? (Quel UID lui a été attribué ?)",
+            "text": "Pourquoi le compte créé est-il particulièrement dangereux ?",
             "answer": "0",
-            "flag": "FLAG{0}",
+            "flag": "REDPAWN{0}",
             "points": 30,
             "hints": [
                 "Regardez les détails du useradd : UID=?",

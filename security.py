@@ -27,8 +27,8 @@ RATE_LIMIT_WINDOW = 30          # Fenêtre en secondes
 RATE_LIMIT_MAX_ATTEMPTS = 5     # Max tentatives erronées dans la fenêtre
 COOLDOWN_BETWEEN_ATTEMPTS = 3   # Secondes minimum entre 2 soumissions
 
-# Regex pour extraire le contenu d'un FLAG{...}
-FLAG_PATTERN = re.compile(r'^FLAG\{(.+)\}$', re.IGNORECASE)
+# Regex pour extraire le contenu d'un FLAG{...} ou REDPAWN{...}
+FLAG_PATTERN = re.compile(r'^(?:FLAG|REDPAWN)\{(.+)\}$', re.IGNORECASE)
 
 
 # ============ Stockage en mémoire ============
@@ -92,7 +92,7 @@ def init_answer_store(challenges):
 def verify_answer(challenge_id, question_id, user_input):
     """
     Vérifier la réponse d'un utilisateur contre les hashes stockés.
-    Accepte : réponse brute, FLAG{réponse}, FLAG{réponse_avec_underscores}
+    Accepte : réponse brute, REDPAWN{réponse}, FLAG{réponse}, avec underscores ou espaces
     """
     key = (challenge_id, question_id)
     if key not in _answer_store:

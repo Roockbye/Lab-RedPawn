@@ -99,7 +99,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q1",
             "text": "Quelle technique MITRE ATT&CK correspond au phishing avec pièce jointe ? (format: T1566.XXX)",
             "answer": "T1566.001",
-            "flag": "FLAG{T1566.001}",
+            "flag": "REDPAWN{T1566.001}",
             "points": 50,
             "hints": [
                 "T1566 = Phishing, le sous-numéro .001 = Spearphishing Attachment",
@@ -111,7 +111,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q2",
             "text": "Quelle technique correspond au dump de credentials via Mimikatz/LSASS ? (format: T1003.XXX)",
             "answer": "T1003.001",
-            "flag": "FLAG{T1003.001}",
+            "flag": "REDPAWN{T1003.001}",
             "points": 50,
             "hints": [
                 "T1003 = OS Credential Dumping",
@@ -123,7 +123,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q3",
             "text": "Combien d'IoC de type 'IP' distincts ont été identifiés au total ?",
             "answer": "4",
-            "flag": "FLAG{4}",
+            "flag": "REDPAWN{4}",
             "points": 40,
             "hints": [
                 "Comptez les lignes de type IP dans la table des IoC",
@@ -135,7 +135,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q4",
             "text": "Combien de comptes au total ont été compromis ou créés par l'attaquant ?",
             "answer": "6",
-            "flag": "FLAG{6}",
+            "flag": "REDPAWN{6}",
             "points": 40,
             "hints": [
                 "Comptez tous les comptes dans la section Account des IoC",
@@ -147,7 +147,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q5",
             "text": "Quelle technique MITRE correspond à l'exfiltration via DNS ? (format: T1048.XXX — le sous-numéro pour protocole alternatif)",
             "answer": "T1048",
-            "flag": "FLAG{T1048}",
+            "flag": "REDPAWN{T1048}",
             "points": 50,
             "hints": [
                 "T1048 = Exfiltration Over Alternative Protocol",
@@ -159,7 +159,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q6",
             "text": "À quel moment de la kill chain l'attaque aurait-elle pu être détectée le plus tôt ? (événement T-? jours)",
             "answer": "T-7",
-            "flag": "FLAG{T-7}",
+            "flag": "REDPAWN{T-7}",
             "points": 50,
             "hints": [
                 "Le premier événement malveillant est le phishing du 11/02",
@@ -171,7 +171,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q7",
             "text": "Quel est le nombre total de fichiers malveillants (File IoC) identifiés ?",
             "answer": "9",
-            "flag": "FLAG{9}",
+            "flag": "REDPAWN{9}",
             "points": 40,
             "hints": [
                 "Comptez les lignes de type File dans la table des IoC"
@@ -182,7 +182,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q8",
             "text": "Quelle technique ATT&CK correspond au Golden Ticket ? (format: T1558.XXX)",
             "answer": "T1558.001",
-            "flag": "FLAG{T1558.001}",
+            "flag": "REDPAWN{T1558.001}",
             "points": 60,
             "hints": [
                 "T1558 = Steal or Forge Kerberos Tickets",
@@ -194,7 +194,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q9",
             "text": "Combien de domaines malveillants distincts ont été utilisés dans l'attaque ?",
             "answer": "4",
-            "flag": "FLAG{4}",
+            "flag": "REDPAWN{4}",
             "points": 40,
             "hints": [
                 "Comptez les IoC de type Domain",
@@ -206,7 +206,7 @@ L'incident est sous contrôle. Le COMEX (Comité Exécutif) demande un rapport c
             "id": "q10",
             "text": "Quelle technique correspond à l'utilisation de PsExec pour le mouvement latéral ? (format: T1570 ou T1021.XXX)",
             "answer": "T1021.002",
-            "flag": "FLAG{T1021.002}",
+            "flag": "REDPAWN{T1021.002}",
             "points": 60,
             "hints": [
                 "T1021 = Remote Services",

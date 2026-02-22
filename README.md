@@ -103,9 +103,9 @@ En parallèle, une **menace interne** (insider threat) est également à investi
 ## 🎮 Fonctionnalités
 
 - **Interface web** sombre thème SOC professionnel
-- **Scoring en temps réel** avec système de flags (`FLAG{...}`)
+- **Scoring en temps réel** avec système de flags (`REDPAWN{...}`)
 - **Système d'indices** avec pénalités de points
-- **Scoreboard multi-joueurs** pour la compétition d'équipe
+- **Scoreboard multi-joueurs** avec synchronisation réseau
 - **Artefacts réalistes** : logs auth, emails, SIEM, Event Logs Windows, scripts malveillants, rapports forensics
 - **Progression sauvegardée** (SQLite local)
 - **Responsive** — fonctionne sur desktop, tablette, mobile
@@ -204,6 +204,57 @@ python app.py    # Écoute sur 0.0.0.0:5050
 ```
 
 Les participants ouvrent `http://<ip-du-serveur>:5050` — rien à installer.
+
+### Option 4 — Local + Scoreboard réseau (recommandé pour les compétitions)
+
+Chaque membre joue en local sur sa machine, mais tous les scores sont synchronisés sur un **scoreboard commun**.
+
+#### Étape 1 : Le Hub (1 seule machine)
+
+Une machine du réseau fait office de serveur central. Lance le lab normalement :
+
+```bash
+cd Lab-RedPawn
+source .venv/bin/activate
+python3 app.py
+```
+
+Note l'IP de cette machine sur le réseau local :
+```bash
+ip -4 addr show | grep "inet " | grep -v 127.0.0.1    # Linux
+ipconfig                                                # Windows
+```
+
+Exemple : `192.168.1.42`
+
+#### Étape 2 : Les joueurs (toutes les autres machines)
+
+Chaque participant clone le repo, installe les dépendances, puis lance avec la variable d'environnement `SCOREBOARD_SERVER` :
+
+```bash
+cd Lab-RedPawn
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+SCOREBOARD_SERVER="http://192.168.1.42:5050" python3 app.py
+```
+
+Sur Windows :
+```cmd
+set SCOREBOARD_SERVER=http://192.168.1.42:5050
+python app.py
+```
+
+Chaque joueur accède à **son propre** `http://127.0.0.1:5050`. La synchronisation est automatique :
+- À chaque **connexion** (login), le score existant est envoyé au hub
+- À chaque **bonne réponse**, le score est mis à jour sur le hub
+- Le **scoreboard** affiche tous les joueurs du réseau (badge 🌐)
+
+#### Pré-requis réseau
+
+- Toutes les machines doivent être sur le **même réseau local** (même WiFi / LAN)
+- Le port **5050** du hub doit être accessible (pas de firewall bloquant)
+- Si le hub n'est pas joignable, le lab continue de fonctionner en local sans erreur
 
 ## 🔧 Prérequis
 

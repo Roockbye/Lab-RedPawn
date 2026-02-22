@@ -6,8 +6,13 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SECRET_KEY = secrets.token_hex(32)
 DATABASE = os.path.join(BASE_DIR, "instance", "soc_lab.db")
 ARTIFACTS_DIR = os.path.join(BASE_DIR, "artifacts")
-FLAG_PREFIX = "FLAG"
+FLAG_PREFIX = "REDPAWN"
 MAX_HINTS = 3
+
+# ── Scoreboard réseau ──
+# URL du serveur central (ex: "http://192.168.1.100:5050")
+# Laisser vide pour un mode local (scoreboard uniquement local)
+SCOREBOARD_SERVER = os.environ.get("SCOREBOARD_SERVER", "")
 
 # Niveaux de difficulté
 LEVELS = {

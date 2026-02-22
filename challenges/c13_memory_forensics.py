@@ -40,11 +40,11 @@ PID    PPID   ImageFileName          CreateTime                 Threads  Handles
 ===== vol3 -f memory.raw windows.pstree =====
 [...extrait pertinent...]
 * 684   620    services.exe
-** 4012  684    svchost.exe (SUSPECT — créé 18/02 12:03, parent inhabituel pour RuntimeBroker)
+** 4012  684    svchost.exe
 *** 4188 4012   RuntimeBroker.exe
-** 7896  4012   svchost.exe (SUSPECT — svchost enfant de svchost, pas de services.exe)
+** 7896  4012   svchost.exe
 * 692   620    lsass.exe
-** 5540  692    lsass.exe (SUSPECT — double lsass.exe, PID 5540 n'est pas le vrai)
+** 5540  692    lsass.exe
 
 ===== vol3 -f memory.raw windows.netscan =====
 Proto  LocalAddr        LocalPort  ForeignAddr      ForeignPort  State        PID    Owner
@@ -67,7 +67,6 @@ PID: 5540 (lsass.exe)
     4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00    MZ..............
     B8 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00    ........@.......
     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-  → PE header détecté dans une zone RWX — injection de DLL probable
 
 PID: 4012 (svchost.exe)
   Address: 0x000001F8C2100000
@@ -77,13 +76,15 @@ PID: 4012 (svchost.exe)
     FC 48 83 E4 F0 E8 C0 00 00 00 41 51 41 50 52 51    .H........AQAPRQ
     56 48 31 D2 65 48 8B 52 60 48 8B 52 18 48 8B 52    VH1.eH.R`H.R.H.R
     20 48 8B 72 50 48 0F B7 4A 4A 4D 31 C9 48 31 C0     H.rPH..JJM1.H1.
-  → Shellcode Meterpreter/Cobalt Strike détecté (prologue classique FC 48 83 E4 F0)
 
 PID: 7896 (svchost.exe)
   Address: 0x00000230B4A00000
   Protection: PAGE_EXECUTE_READWRITE
   Flags: COMMIT
-  → Reflective DLL injection pattern
+  Hex Dump:
+    4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00    MZ..............
+    B8 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00    ........@.......
+    E8 00 00 00 00 5B 48 81 EB 05 10 40 00 48 8D 9B    .....[H....@.H..
 
 ===== vol3 -f memory.raw windows.dlllist --pid 5540 =====
 PID 5540 (lsass.exe):
@@ -102,9 +103,9 @@ Offset             PID   Handle  Type     GrantedAccess  Name
 0xFFFF928045C56100 4012  0x00CC  Key      0x000F003F     \REGISTRY\MACHINE\SOFTWARE\Microsoft\Cryptography
 
 ===== vol3 -f memory.raw windows.cmdline =====
-PID 5540: lsass.exe  (Pas d'arguments — le vrai lsass a d'habitude des arguments spécifiques)
+PID 5540: lsass.exe
 PID 4012: C:\Windows\System32\svchost.exe -k netsvcs -p -s Schedule
-PID 7896: C:\Windows\System32\svchost.exe (Pas de -k — suspect, les vrais svchost ont toujours -k)
+PID 7896: C:\Windows\System32\svchost.exe
 
 ===== vol3 -f memory.raw windows.registry.hivelist =====
 [...standard, pas d'anomalie notable...]
@@ -118,16 +119,15 @@ Service: WinDefHealthCheck
   Start: SERVICE_AUTO_START
   PID: 4012
   Type: SERVICE_WIN32_OWN_PROCESS
-  → Ce service n'est PAS un vrai service Windows Defender
 
 ===== TIMELINE RÉSUMÉ =====
-12:03:44 — PID 4012 (svchost.exe) créé via service malveillant WinDefHealthCheck
-12:03:47 — PID 4012 lance RuntimeBroker.exe (descente de privilèges)
-13:22:08 — PID 5540 (faux lsass.exe) créé, injection PE dans mémoire RWX
-13:22:15 — PID 5540 établit connexion C2 vers 185.234.72.19:443
-14:01:33 — PID 7204 (dllhost.exe) lancé, activité WMI suspecte
-14:15:22 — PID 7896 (svchost sans -k) créé, reflective DLL injection
-14:15:30 — PID 7896 contacte 91.234.56.78:80 puis se met en CLOSE_WAIT
+12:03:44 — PID 4012 (svchost.exe) créé
+12:03:47 — PID 4188 (RuntimeBroker.exe) créé par PID 4012
+13:22:08 — PID 5540 (lsass.exe) créé
+13:22:15 — Connexion réseau PID 5540 vers 185.234.72.19:443
+14:01:33 — PID 7204 (dllhost.exe) créé
+14:15:22 — PID 7896 (svchost.exe) créé
+14:15:30 — Connexion réseau PID 7896 vers 91.234.56.78:80
 """
 
 CHALLENGE = {
@@ -165,7 +165,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q1",
             "text": "Quel PID correspond au faux processus lsass.exe (le processus injecté, pas le légitime) ?",
             "answer": "5540",
-            "flag": "FLAG{5540}",
+            "flag": "REDPAWN{5540}",
             "points": 40,
             "hints": [
                 "Regardez la sortie pstree — il y a deux lsass.exe",
@@ -177,7 +177,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q2",
             "text": "Quelle séquence hexadécimale (5 premiers octets) identifie le shellcode Cobalt Strike/Meterpreter dans le PID 4012 ?",
             "answer": "FC 48 83 E4 F0",
-            "flag": "FLAG{FC4883E4F0}",
+            "flag": "REDPAWN{FC4883E4F0}",
             "points": 60,
             "hints": [
                 "C'est le prologue classique d'un shellcode x64",
@@ -189,7 +189,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q3",
             "text": "Quel type de protection mémoire est utilisé par toutes les zones injectées (acronyme Windows) ?",
             "answer": "PAGE_EXECUTE_READWRITE",
-            "flag": "FLAG{PAGE_EXECUTE_READWRITE}",
+            "flag": "REDPAWN{PAGE_EXECUTE_READWRITE}",
             "points": 40,
             "hints": [
                 "C'est une permission mémoire qui permet lecture + écriture + exécution",
@@ -201,7 +201,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q4",
             "text": "Quel est le nom du mutex créé par le processus malveillant PID 4012 ?",
             "answer": "PERS1ST_M0DUL3",
-            "flag": "FLAG{PERS1ST_M0DUL3}",
+            "flag": "REDPAWN{PERS1ST_M0DUL3}",
             "points": 50,
             "hints": [
                 "Regardez la sortie windows.handles pour le PID 4012",
@@ -213,7 +213,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q5",
             "text": "Par quel faux nom de service Windows le processus PID 4012 a-t-il été lancé ?",
             "answer": "WinDefHealthCheck",
-            "flag": "FLAG{WinDefHealthCheck}",
+            "flag": "REDPAWN{WinDefHealthCheck}",
             "points": 50,
             "hints": [
                 "Regardez la sortie svcscan",
@@ -223,9 +223,9 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
         },
         {
             "id": "q6",
-            "text": "Combien de processus au total sont identifiés comme suspects dans l'analyse pstree ?",
+            "text": "Combien de processus au total identifiez-vous comme suspects dans cette analyse mémoire ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 40,
             "hints": [
                 "Cherchez les mentions '(SUSPECT)' dans la sortie pstree"
@@ -236,7 +236,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q7",
             "text": "Quelle technique d'injection est utilisée sur le PID 7896 (svchost.exe) ?",
             "answer": "Reflective DLL injection",
-            "flag": "FLAG{Reflective_DLL_injection}",
+            "flag": "REDPAWN{Reflective_DLL_injection}",
             "points": 50,
             "hints": [
                 "C'est mentionné dans la sortie malfind pour ce PID",
@@ -248,7 +248,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q8",
             "text": "Quel port distant utilise la connexion C2 du faux lsass (PID 5540) ?",
             "answer": "443",
-            "flag": "FLAG{443}",
+            "flag": "REDPAWN{443}",
             "points": 30,
             "hints": [
                 "Regardez netscan pour le PID 5540"
@@ -257,9 +257,9 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
         },
         {
             "id": "q9",
-            "text": "Qu'est-ce qui prouve que le svchost.exe PID 7896 n'est PAS légitime ? (élément manquant dans sa cmdline)",
+            "text": "Qu'est-ce qui prouve que le svchost.exe PID 7896 n'est PAS légitime ?",
             "answer": "-k",
-            "flag": "FLAG{-k}",
+            "flag": "REDPAWN{-k}",
             "points": 60,
             "hints": [
                 "Les vrais svchost.exe sont toujours lancés avec un paramètre spécifique",
@@ -271,7 +271,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q10",
             "text": "Quel binaire est associé au faux service WinDefHealthCheck sur disque ?",
             "answer": "health_check.exe",
-            "flag": "FLAG{health_check.exe}",
+            "flag": "REDPAWN{health_check.exe}",
             "points": 50,
             "hints": [
                 "Regardez le champ Binary dans svcscan",
@@ -283,7 +283,7 @@ C'est de la forensique mémoire pure. Montrez que vous maîtrisez Volatility.
             "id": "q11",
             "text": "Les 2 premiers octets du dump mémoire du faux lsass (PID 5540) indiquent quel type de fichier injecté ?",
             "answer": "PE",
-            "flag": "FLAG{PE}",
+            "flag": "REDPAWN{PE}",
             "points": 50,
             "hints": [
                 "4D 5A en hexadécimal = 'MZ' en ASCII",

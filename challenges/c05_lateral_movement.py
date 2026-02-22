@@ -170,7 +170,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q1",
             "text": "Depuis quelle machine (IP) l'attaquant a-t-il initié le mouvement latéral vers le DC ?",
             "answer": "10.0.3.45",
-            "flag": "FLAG{10.0.3.45}",
+            "flag": "REDPAWN{10.0.3.45}",
             "points": 40,
             "hints": [
                 "Regardez la Source IP des premières tentatives de connexion échouées",
@@ -182,7 +182,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q2",
             "text": "Quel compte de service a été compromis pour l'accès initial au DC ?",
             "answer": "svc-backup",
-            "flag": "FLAG{svc-backup}",
+            "flag": "REDPAWN{svc-backup}",
             "points": 40,
             "hints": [
                 "Cherchez le premier Event 4624 (Successful Logon) depuis l'IP attaquante",
@@ -194,7 +194,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q3",
             "text": "Quel type de logon (numéro) a été utilisé pour la connexion initiale ?",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 30,
             "hints": [
                 "Logon Type 3 = Network logon",
@@ -206,7 +206,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q4",
             "text": "Quel fichier DLL suspect a été exécuté via rundll32.exe pour lancer l'attaque Mimikatz ?",
             "answer": "d3d11.dll",
-            "flag": "FLAG{d3d11.dll}",
+            "flag": "REDPAWN{d3d11.dll}",
             "points": 50,
             "hints": [
                 "Cherchez les process creation avec rundll32.exe",
@@ -218,7 +218,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q5",
             "text": "Quel compte Domain Admin a été compromis après l'attaque Mimikatz ?",
             "answer": "admin.rsi",
-            "flag": "FLAG{admin.rsi}",
+            "flag": "REDPAWN{admin.rsi}",
             "points": 40,
             "hints": [
                 "Cherchez l'Event 4648 (logon avec credentials explicites) après l'injection dans lsass",
@@ -230,7 +230,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q6",
             "text": "Quel outil Windows natif a été utilisé pour extraire la base NTDS (dump Active Directory) ?",
             "answer": "ntdsutil.exe",
-            "flag": "FLAG{ntdsutil}",
+            "flag": "REDPAWN{ntdsutil}",
             "points": 50,
             "hints": [
                 "Cherchez une commande liée à NTDS dans les process creation",
@@ -242,7 +242,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q7",
             "text": "Quel est le nom du compte de backdoor créé par l'attaquant dans le domaine ?",
             "answer": "support_it",
-            "flag": "FLAG{support_it}",
+            "flag": "REDPAWN{support_it}",
             "points": 40,
             "hints": [
                 "Cherchez l'Event 4720 (User Account Created)",
@@ -254,7 +254,7 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
             "id": "q8",
             "text": "À quel groupe le compte backdoor a-t-il été ajouté ?",
             "answer": "Domain Admins",
-            "flag": "FLAG{Domain_Admins}",
+            "flag": "REDPAWN{Domain_Admins}",
             "points": 40,
             "hints": [
                 "Cherchez l'Event 4728 (Member Added to Group)",
@@ -264,9 +264,9 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
         },
         {
             "id": "q9",
-            "text": "Quel est le mot de passe du compte backdoor créé ? (visible dans la commande net user)",
+            "text": "Quel est le mot de passe du compte backdoor créé ?",
             "answer": "P@ssw0rd2026!",
-            "flag": "FLAG{P@ssw0rd2026!}",
+            "flag": "REDPAWN{P@ssw0rd2026!}",
             "points": 30,
             "hints": [
                 "Regardez la commande 'net user' complète avec le mot de passe en clair",
@@ -276,9 +276,9 @@ Les Event Logs Windows du DC ont été extraits. Vous devez reconstituer la cha�
         },
         {
             "id": "q10",
-            "text": "Dans quel répertoire le dump NTDS a-t-il été compressé avant exfiltration ? (chemin du zip)",
+            "text": "Quel est le nom du fichier compressé contenant le dump NTDS ?",
             "answer": "C:\\Windows\\Temp\\backup.zip",
-            "flag": "FLAG{backup.zip}",
+            "flag": "REDPAWN{backup.zip}",
             "points": 40,
             "hints": [
                 "Cherchez la commande Compress-Archive (PowerShell)",

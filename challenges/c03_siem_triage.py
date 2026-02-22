@@ -158,9 +158,9 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
 
 | Classification | Abréviation | Signification | Exemple |
 |---|---|---|---|
-| **True Positive** | **TP** | L'alerte détecte une **vraie menace** qui nécessite investigation et action immédiate. | Mimikatz détecté sur un serveur → attaque réelle en cours |
-| **False Positive** | **FP** | L'alerte se déclenche **à tort** — il n'y a aucune menace réelle. Le comportement détecté est inoffensif. | Un scan de vulnérabilité planifié déclenche une alerte IDS |
-| **Benign True Positive** | **BTP** | L'alerte détecte un **vrai comportement** correspondant à la règle, mais l'activité est **légitime et autorisée**. Pas de menace. | Un admin modifie une GPO avec un ticket de changement approuvé |
+| **True Positive** | **TP** | L'alerte détecte une **vraie menace** qui nécessite investigation et action immédiate. | Un ransomware chiffre des fichiers sur un serveur de production |
+| **False Positive** | **FP** | L'alerte se déclenche **à tort** — il n'y a aucune menace réelle. Le comportement détecté est inoffensif. | Un scan de vulnérabilité planifié par l'équipe IT déclenche une alerte IDS |
+| **Benign True Positive** | **BTP** | L'alerte détecte un **vrai comportement** correspondant à la règle, mais l'activité est **légitime et autorisée**. Pas de menace. | Un pentester autorisé déclenche une alerte en exécutant un outil offensif dans le cadre d'un audit approuvé |
     """,
     "artifacts": [
         {
@@ -175,7 +175,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q1",
             "text": "Alerte #1 (Scheduled Task via CLI) — Quelle est la classification ? (TP, FP, ou BTP)",
             "answer": "TP",
-            "flag": "FLAG{TP}",
+            "flag": "REDPAWN{TP}",
             "points": 40,
             "max_attempts": 2,
             "hints": [
@@ -188,7 +188,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q2",
             "text": "Alerte #2 (DNS Query Newly Registered Domain) — Quelle est la classification ? (TP, FP, ou BTP)",
             "answer": "BTP",
-            "flag": "FLAG{BTP}",
+            "flag": "REDPAWN{BTP}",
             "points": 40,
             "max_attempts": 2,
             "hints": [
@@ -201,7 +201,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q3",
             "text": "Alerte #3 (Mimikatz Pattern) — Quelle est la classification ? (TP, FP, ou BTP)",
             "answer": "TP",
-            "flag": "FLAG{TP}",
+            "flag": "REDPAWN{TP}",
             "points": 40,
             "max_attempts": 2,
             "hints": [
@@ -214,7 +214,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q4",
             "text": "Alerte #6 (GPO Modified) — Quelle est la classification ? (TP, FP, ou BTP)",
             "answer": "BTP",
-            "flag": "FLAG{BTP}",
+            "flag": "REDPAWN{BTP}",
             "points": 40,
             "max_attempts": 2,
             "hints": [
@@ -227,7 +227,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q5",
             "text": "Quelle alerte doit être investiguée EN PREMIER ? (donnez le numéro #)",
             "answer": "3",
-            "flag": "FLAG{3}",
+            "flag": "REDPAWN{3}",
             "points": 50,
             "hints": [
                 "Quelle alerte a la plus haute sévérité ET le plus grand impact potentiel ?",
@@ -239,7 +239,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q6",
             "text": "Les alertes #1 et #5 semblent liées. Quel est l'élément commun qui les relie ?",
             "answer": "10.0.3.45",
-            "flag": "FLAG{10.0.3.45}",
+            "flag": "REDPAWN{10.0.3.45}",
             "points": 50,
             "hints": [
                 "Comparez les machines sources des deux alertes",
@@ -251,7 +251,7 @@ Votre mission : trier chaque alerte, déterminer sa classification (Vrai Positif
             "id": "q7",
             "text": "Dans l'alerte #4 (Tor), quel ratio upload/download suggère une exfiltration de données ?",
             "answer": "15:1",
-            "flag": "FLAG{15:1}",
+            "flag": "REDPAWN{15:1}",
             "points": 40,
             "hints": [
                 "Regardez les volumes de données dans l'alerte #4",

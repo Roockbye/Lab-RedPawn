@@ -165,7 +165,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q1",
             "text": "Quel est le JA3 hash du client C2 ? (empreinte TLS du malware)",
             "answer": "72a589da586844d7f0818ce684948eea",
-            "flag": "FLAG{72a589da586844d7f0818ce684948eea}",
+            "flag": "REDPAWN{72a589da586844d7f0818ce684948eea}",
             "points": 50,
             "hints": [
                 "Regardez la section Analyse TLS / Certificats",
@@ -177,7 +177,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q2",
             "text": "Quel est l'intervalle moyen des beacons C2 en secondes (arrondi) ?",
             "answer": "60",
-            "flag": "FLAG{60}",
+            "flag": "REDPAWN{60}",
             "points": 40,
             "hints": [
                 "Regardez la section Analyse des Beacons",
@@ -189,7 +189,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q3",
             "text": "Quel domaine est utilisé pour le typosquatting de Microsoft dans les requêtes DNS ?",
             "answer": "cdn-static.microsft-update.com",
-            "flag": "FLAG{cdn-static.microsft-update.com}",
+            "flag": "REDPAWN{cdn-static.microsft-update.com}",
             "points": 50,
             "hints": [
                 "Regardez les Top domaines suspects dans l'analyse DNS",
@@ -201,7 +201,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q4",
             "text": "Quel est le volume approximatif de données exfiltrées via gate.php (en MB) ?",
             "answer": "15",
-            "flag": "FLAG{15}",
+            "flag": "REDPAWN{15}",
             "points": 40,
             "hints": [
                 "Regardez le POST vers gate.php dans la section HTTP en clair",
@@ -213,7 +213,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q5",
             "text": "Le certificat TLS du C2 est auto-signé. Quel CN (Common Name) usurpe-t-il ?",
             "answer": "update-service.microsft.com",
-            "flag": "FLAG{update-service.microsft.com}",
+            "flag": "REDPAWN{update-service.microsft.com}",
             "points": 50,
             "hints": [
                 "Regardez le champ Subject du certificat",
@@ -225,7 +225,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q6",
             "text": "Combien de fichiers ont été extraits du trafic par NetworkMiner ?",
             "answer": "4",
-            "flag": "FLAG{4}",
+            "flag": "REDPAWN{4}",
             "points": 30,
             "hints": [
                 "Comptez dans la section Extraction Fichiers"
@@ -236,7 +236,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q7",
             "text": "Par quel outil l'exécutable health_check.exe est-il packé ?",
             "answer": "UPX",
-            "flag": "FLAG{UPX}",
+            "flag": "REDPAWN{UPX}",
             "points": 50,
             "hints": [
                 "Regardez la description du fichier dans les extractions NetworkMiner",
@@ -248,7 +248,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q8",
             "text": "Quel partage SMB administratif a été utilisé pour uploader health_check.exe sur le DC ?",
             "answer": "ADMIN$",
-            "flag": "FLAG{ADMIN$}",
+            "flag": "REDPAWN{ADMIN$}",
             "points": 40,
             "hints": [
                 "Regardez les TreeConnect SMB2",
@@ -260,7 +260,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q9",
             "text": "Quel paramètre HTTP identifie la machine compromise dans les requêtes vers le serveur d'exfiltration ?",
             "answer": "RPWN-WKS03",
-            "flag": "FLAG{RPWN-WKS03}",
+            "flag": "REDPAWN{RPWN-WKS03}",
             "points": 40,
             "hints": [
                 "Regardez le GET /update.php",
@@ -272,7 +272,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q10",
             "text": "Quel pourcentage de jitter est appliqué aux beacons C2 ?",
             "answer": "3.5",
-            "flag": "FLAG{3.5}",
+            "flag": "REDPAWN{3.5}",
             "points": 40,
             "hints": [
                 "Regardez la section Analyse des Beacons, champ Jitter %"
@@ -283,7 +283,7 @@ Forensique réseau avancée. Montrez votre maîtrise de l'analyse PCAP.
             "id": "q11",
             "text": "Quel fichier sensible du DC a été lu via SMB par l'attaquant ? (chemin relatif depuis C:\\Windows\\)",
             "answer": "System32\\config\\SAM",
-            "flag": "FLAG{SAM}",
+            "flag": "REDPAWN{SAM}",
             "points": 60,
             "hints": [
                 "Regardez les opérations SMB2 Create avec accès READ",
