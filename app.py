@@ -5,6 +5,8 @@ Application Flask principale — avec protections anti-triche
 """
 
 import os
+import markdown as md
+from markupsafe import Markup
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
 from config import SECRET_KEY, LEVELS, CATEGORIES
 from database import (
@@ -20,6 +22,15 @@ from security import (
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+
+
+# ============ Jinja2 Filters ============
+
+@app.template_filter('markdown')
+def markdown_filter(text):
+    """Convertir du Markdown en HTML pour les briefings."""
+    return Markup(md.markdown(text, extensions=['tables', 'fenced_code']))
+
 
 # Initialize DB on startup
 init_db()
@@ -193,15 +204,6 @@ def submit():
 
     player_id = session["player_id"]
 
-    # ===== RATE LIMITING =====
-    allowed, wait = check_rate_limit(player_id, challenge_id, question_id)
-    if not allowed:
-        return jsonify({
-            "status": "rate_limited",
-            "message": f"⏳ Trop de tentatives. Attendez {wait}s avant de réessayer.",
-            "wait": wait,
-        }), 429
-
     challenge = get_challenge(challenge_id)
     if not challenge:
         return jsonify({"error": "Challenge introuvable"}), 404
@@ -215,6 +217,16 @@ def submit():
 
     if not question:
         return jsonify({"error": "Question introuvable"}), 404
+
+    # ===== RATE LIMITING =====
+    max_attempts = question.get("max_attempts")
+    allowed, wait = check_rate_limit(player_id, challenge_id, question_id, max_attempts)
+    if not allowed:
+        return jsonify({
+            "status": "rate_limited",
+            "message": f"⏳ Trop de tentatives. Attendez {wait}s avant de réessayer.",
+            "wait": wait,
+        }), 429
 
     # ===== VÉRIFICATION PAR HASH (anti-triche) =====
     is_correct = verify_answer(challenge_id, question_id, answer)

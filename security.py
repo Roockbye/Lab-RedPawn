@@ -120,13 +120,15 @@ def verify_answer(challenge_id, question_id, user_input):
 
 # ============ Rate Limiting ============
 
-def check_rate_limit(player_id, challenge_id, question_id):
+def check_rate_limit(player_id, challenge_id, question_id, max_attempts=None):
     """
     Vérifier si un joueur est limité en fréquence.
     Retourne (autorisé: bool, temps_attente: float)
+    max_attempts: override du nombre max de tentatives (par défaut RATE_LIMIT_MAX_ATTEMPTS)
     """
     key = (player_id, challenge_id, question_id)
     now = time.time()
+    limit = max_attempts if max_attempts is not None else RATE_LIMIT_MAX_ATTEMPTS
 
     # Nettoyer les entrées hors fenêtre
     _attempts[key] = [t for t in _attempts[key] if now - t < RATE_LIMIT_WINDOW]
@@ -139,7 +141,7 @@ def check_rate_limit(player_id, challenge_id, question_id):
             return False, round(COOLDOWN_BETWEEN_ATTEMPTS - since_last, 1)
 
     # Vérifier le nombre max de tentatives
-    if len(entries) >= RATE_LIMIT_MAX_ATTEMPTS:
+    if len(entries) >= limit:
         oldest = entries[0]
         wait = RATE_LIMIT_WINDOW - (now - oldest)
         return False, round(wait, 1)

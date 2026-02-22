@@ -94,13 +94,13 @@ Analysez le fichier `auth.log` ci-dessous et répondez aux questions pour compl�
         {
             "id": "q2",
             "text": "Combien de tentatives de connexion échouées l'attaquant a-t-il effectuées au total ?",
-            "answer": "27",
-            "flag": "FLAG{27}",
+            "answer": "28",
+            "flag": "FLAG{28}",
             "points": 40,
             "hints": [
                 "Comptez toutes les lignes 'Failed password' provenant de l'IP attaquante",
                 "Il y a des tentatives sur plusieurs comptes (admin, root, ubuntu, test, user, ftpuser)",
-                "admin: 8, root: 10, ubuntu: 3, test: 2, user: 2, ftpuser: 1 = ?"
+                "admin: 10, root: 10, ubuntu: 3, test: 2, user: 2, ftpuser: 1 = ?"
             ],
             "hint_cost": 13
         },

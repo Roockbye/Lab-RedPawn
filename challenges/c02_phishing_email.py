@@ -137,7 +137,7 @@ Analysez l'email et les résultats des vérifications techniques pour répondre 
         },
         {
             "id": "q2",
-            "text": "Quelle technique de typosquatting est utilisée dans le nom de domaine ? (quel caractère remplace quel autre ?)",
+            "text": "Quelle technique de typosquatting est utilisée dans le nom de domaine ? (quel caractère remplace quel autre ? — format attendu : x remplace x)",
             "answer": "0 remplace o",
             "flag": "FLAG{0_remplace_o}",
             "points": 40,

@@ -27,7 +27,7 @@
     <details class="story-section" open>
         <summary class="story-toggle">📋 Briefing de Mission</summary>
         <div class="story-content markdown">
-            {{ challenge.story | safe }}
+            {{ challenge.story | markdown }}
         </div>
     </details>
 
@@ -60,6 +60,9 @@
                     </div>
                     <button class="btn btn-sm btn-outline copy-artifact" data-artifact="{{ loop.index0 }}" title="Copier le contenu">
                         📋 Copier
+                    </button>
+                    <button class="btn btn-sm btn-outline download-artifact" data-filename="{{ artifact.name }}" title="Télécharger l'artefact">
+                        ⬇️ Télécharger
                     </button>
                 </div>
                 <div class="artifact-content">
