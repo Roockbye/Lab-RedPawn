@@ -327,3 +327,45 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// ───── Badge completion: dismiss + fireworks ─────
+function dismissBadge() {
+    const overlay = document.getElementById('badge-overlay');
+    if (!overlay) return;
+    overlay.classList.add('dismissed');
+    sessionStorage.setItem('badge_dismissed', '1');
+    setTimeout(() => overlay.remove(), 600);
+}
+
+(function initBadgeFireworks() {
+    const container = document.getElementById('badge-fireworks');
+    if (!container) return;
+    if (sessionStorage.getItem('badge_dismissed') === '1') {
+        const overlay = document.getElementById('badge-overlay');
+        if (overlay) overlay.remove();
+        return;
+    }
+    const colors = ['#d4af37', '#f5d442', '#ff6b6b', '#10b981', '#6366f1', '#f472b6', '#ffffff'];
+    function burst(cx, cy) {
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('span');
+            p.className = 'firework-particle';
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 80 + Math.random() * 200;
+            p.style.left = cx + 'px';
+            p.style.top = cy + 'px';
+            p.style.setProperty('--fx', Math.cos(angle) * dist + 'px');
+            p.style.setProperty('--fy', Math.sin(angle) * dist + 'px');
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.animationDuration = (1 + Math.random()) + 's';
+            p.style.animationDelay = (Math.random() * 0.3) + 's';
+            container.appendChild(p);
+            setTimeout(() => p.remove(), 2500);
+        }
+    }
+    // Initial bursts
+    setTimeout(() => burst(container.offsetWidth * 0.3, container.offsetHeight * 0.3), 400);
+    setTimeout(() => burst(container.offsetWidth * 0.7, container.offsetHeight * 0.4), 800);
+    setTimeout(() => burst(container.offsetWidth * 0.5, container.offsetHeight * 0.2), 1200);
+    setTimeout(() => burst(container.offsetWidth * 0.2, container.offsetHeight * 0.6), 1600);
+    setTimeout(() => burst(container.offsetWidth * 0.8, container.offsetHeight * 0.5), 2000);
+})();

@@ -146,6 +146,12 @@ def dashboard():
     # Calculate total possible points
     total_possible = sum(c["points_total"] for c in ALL_CHALLENGES)
 
+    # Check if all challenges are completed
+    all_complete = all(
+        len(solved_map.get(c["id"], set())) == len(c["questions"])
+        for c in ALL_CHALLENGES
+    )
+
     return render_template(
         "dashboard.html",
         player=player,
@@ -155,6 +161,7 @@ def dashboard():
         stats=stats,
         total_possible=total_possible,
         solved_map=solved_map,
+        all_complete=all_complete,
     )
 
 

@@ -10,10 +10,10 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">
+        <a href="{{ url_for('index') }}" class="nav-brand" style="text-decoration: none; color: inherit;">
             <span class="brand-icon">🛡️</span>
             <span class="brand-text">RedPawn <span class="brand-accent">SOC Lab</span></span>
-        </div>
+        </a>
         {% if session.get('username') %}
         <div class="nav-links">
             <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">

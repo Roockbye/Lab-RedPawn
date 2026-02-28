@@ -2,6 +2,24 @@
 {% block title %}Dashboard — RedPawn SOC Lab{% endblock %}
 
 {% block content %}
+{% if all_complete %}
+<!-- Badge de Complétion -->
+<div id="badge-overlay" class="badge-overlay">
+    <div class="badge-content">
+        <div class="badge-fireworks" id="badge-fireworks"></div>
+        <div class="badge-medal">
+            <div class="badge-glow"></div>
+            <div class="badge-icon">🛡️</div>
+        </div>
+        <h1 class="badge-title">MISSION ACCOMPLIE</h1>
+        <p class="badge-subtitle">Agent {{ session.username }}, vous avez terminé toutes les missions de RedPawn SOC Lab.</p>
+        <div class="badge-rank">🏅 RANG : EXPERT SOC — ELITE TIER 🏅</div>
+        <div class="badge-score">Score final : {{ player.total_score }} / {{ total_possible }} points</div>
+        <button class="badge-dismiss" onclick="dismissBadge()">Continuer →</button>
+    </div>
+</div>
+{% endif %}
+
 <div class="dashboard">
     <!-- Player Stats Bar -->
     <div class="stats-bar">
